@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zetuos10 Lite — Релиз</title>
+    <title>Zetu</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <style>
         /* ===== Глобальные переменные ===== */
         :root {
@@ -53,7 +54,7 @@
             color: #0a0b14;
         }
 
-        /* ===== Фоновое свечение (лёгкое) ===== */
+        /* ===== Фоновое свечение ===== */
         .bg-glow {
             position: fixed;
             top: 0;
@@ -108,9 +109,9 @@
         }
 
         .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1489,7 +1490,7 @@
 
     <!-- ===== НАВИГАЦИЯ ===== -->
     <nav id="navbar">
-        <div class="logo">Zetuos<span>10</span><small>Lite</small></div>
+        <div class="logo">Zetu<span>OS</span><small>10 Lite</small></div>
         <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
         <div class="nav-links" id="navLinks">
             <button class="nav-btn active" data-page="page-home">Главная</button>
@@ -1505,8 +1506,8 @@
     <!-- ===== МОДАЛЬНОЕ ОКНО (приветствие) ===== -->
     <div class="modal-overlay" id="welcomeModal">
         <div class="modal">
-            <h2>🎉 Zetuos10 Lite <span>доступна!</span></h2>
-            <p>Скачайте самую лёгкую и быструю сборку Windows 10 уже сегодня. Полная приватность, максимальный FPS и минимальный размер.</p>
+            <h2>🎉 ZetuOS <span>10 Lite</span></h2>
+            <p>Самая быстрая и лёгкая сборка Windows 10 уже здесь. Полная приватность, максимальный FPS и минимальный размер.</p>
             <button class="btn btn--primary" onclick="closeModal()">Отлично!</button>
         </div>
     </div>
@@ -1517,7 +1518,7 @@
     <section class="page active" id="page-home">
         <div class="hero">
             <div class="hero-badge">🔥 Релиз состоялся!</div>
-            <h1>Zetuos10 Lite</h1>
+            <h1>ZetuOS 10 Lite</h1>
             <p>
                 Лёгкая, быстрая и приватная сборка Windows 10 уже здесь. Наслаждайтесь максимальной производительностью, минимальным потреблением ресурсов и полным контролем над системой.
             </p>
@@ -1531,8 +1532,8 @@
 
             <!-- Кнопка скачивания -->
             <div class="hero-actions">
-                <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание Zetuos10 Lite начато!', 'success')">
-                    ⬇️ Скачать Zetuos10 Lite
+                <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание ZetuOS 10 Lite начато!', 'success')">
+                    ⬇️ Скачать ZetuOS 10 Lite
                 </a>
                 <button class="btn btn--ghost" onclick="switchPage('page-downloads')">Подробнее</button>
             </div>
@@ -1550,7 +1551,7 @@
             </div>
 
             <!-- Блок преимуществ -->
-            <h2 class="section-title">Почему <span>Zetuos10 Lite</span>?</h2>
+            <h2 class="section-title">Почему <span>ZetuOS 10 Lite</span>?</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <span class="icon">⚡</span>
@@ -1585,7 +1586,7 @@
             </div>
 
             <!-- Сравнение с обычной Windows 10 -->
-            <h2 class="section-title">Zetuos10 Lite vs <span>Windows 10</span></h2>
+            <h2 class="section-title">ZetuOS 10 Lite vs <span>Windows 10</span></h2>
             <div class="compare-grid">
                 <div class="compare-box bad">
                     <h4>💀 Обычная Windows 10</h4>
@@ -1598,7 +1599,7 @@
                     </ul>
                 </div>
                 <div class="compare-box good">
-                    <h4>🚀 Zetuos10 Lite</h4>
+                    <h4>🚀 ZetuOS 10 Lite</h4>
                     <ul>
                         <li>Всего 45–50 фоновых процессов</li>
                         <li>Потребление ОЗУ 0.8–1.1 ГБ</li>
@@ -1638,7 +1639,7 @@
             <!-- Опрос -->
             <h2 class="section-title">Мнение <span>сообщества</span></h2>
             <div class="poll" id="poll">
-                <h3>Что вам нравится в Zetuos10 Lite?</h3>
+                <h3>Что вам нравится в ZetuOS 10 Lite?</h3>
                 <div class="options" id="pollOptions">
                     <div class="option" data-option="0"><span>⚡ Производительность</span><span class="vote-count">0%</span></div>
                     <div class="option" data-option="1"><span>🔒 Приватность</span><span class="vote-count">0%</span></div>
@@ -1686,7 +1687,7 @@
                 <div class="avatar">A</div>
                 <div class="name">Alxiizzz <span style="font-size:0.8rem; color:var(--text-secondary);">&amp; Пашаонт тестер</span></div>
                 <div class="role">Главный разработчик и тестер</div>
-                <div class="bio">Alxiizzz — создатель Zetuos10 Lite. Пашаонт тестер — главный бета-тестер и идеолог улучшений.</div>
+                <div class="bio">Alxiizzz — создатель ZetuOS 10 Lite. Пашаонт тестер — главный бета-тестер и идеолог улучшений.</div>
             </div>
 
             <!-- Подписка на новости -->
@@ -1715,7 +1716,7 @@
             <h2 class="section-title">Доступные <span>версии</span></h2>
             <div class="downloads-grid">
                 <div class="download-card">
-                    <div class="version">Zetuos10 Lite</div>
+                    <div class="version">ZetuOS 10 Lite</div>
                     <div class="status ready">✔ Доступна</div>
                     <p class="desc">
                         Лёгкая, быстрая и приватная сборка на базе Windows 10.<br />
@@ -1725,16 +1726,20 @@
                     <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
                 </div>
                 <div class="download-card">
-                    <div class="version">Zetuos11 Lite</div>
+                    <div class="version">ZetuOS 8.1 Lite</div>
+                    <div class="status ready">✔ Доступна</div>
+                    <p class="desc">
+                        Классическая сборка для старых ПК на основе Windows 8.1.<br />
+                        <strong>Версия:</strong> 8.1 x64<br />
+                        <strong>Размер:</strong> ~3.2 ГБ
+                    </p>
+                    <a href="https://drive.google.com/uc?export=download&id=1CTQdTxCWKyEhUy6cbSHDdAmswO1XGQga" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
+                </div>
+                <div class="download-card">
+                    <div class="version">ZetuOS 11 Lite</div>
                     <div class="status coming">⏳ В разработке</div>
                     <p class="desc">Будущая сборка на основе Windows 11 с ещё большей оптимизацией.</p>
                     <button class="btn btn--small btn--ghost" onclick="showToast('Разработка идёт, следите за новостями!', 'error')">Ожидается</button>
-                </div>
-                <div class="download-card">
-                    <div class="version">Zetuos8.1 Lite</div>
-                    <div class="status started">🔄 Разработка начинается</div>
-                    <p class="desc">Классическая сборка для старых ПК на основе Windows 8.1. Работа над проектом стартует в ближайшее время.</p>
-                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка начинается! Следите за анонсами.', 'success')">Скоро</button>
                 </div>
             </div>
         </div>
@@ -1802,7 +1807,7 @@
                 <div class="messages" id="aiMessages">
                     <div class="msg ai">
                         <div class="avatar">🧠</div>
-                        <div class="bubble">Привет! Я ZetuAI — ваш универсальный помощник. Спрашивайте о чём угодно: наука, история, технологии, здоровье, спорт, кулинария, путешествия — и, конечно, о Zetuos10. Я всегда рад помочь!</div>
+                        <div class="bubble">Привет! Я ZetuAI — ваш универсальный помощник. Спрашивайте о чём угодно: наука, история, технологии, здоровье, спорт, кулинария, путешествия — и, конечно, о ZetuOS. Я всегда рад помочь!</div>
                     </div>
                 </div>
                 <div class="typing-indicator" id="typingIndicator">
@@ -1893,13 +1898,13 @@
             <a onclick="switchPage('page-wiki')">Вики</a>
             <a onclick="switchPage('page-ai')">ZetuAI</a>
             <a onclick="switchPage('page-tools')">Инструменты</a>
-            <a onclick="showToast('Связь: support@zetuos10.ru', 'success')">Поддержка</a>
+            <a onclick="showToast('Связь: support@zetu.com', 'success')">Поддержка</a>
         </div>
-        <p>Zetuos10 Lite — неофициальная сборка на основе Windows 10. Все права принадлежат Microsoft.</p>
+        <p>ZetuOS — неофициальные сборки Windows. Все права принадлежат Microsoft.</p>
         <p class="creators">
             Создатели: <strong>Alxiizzz</strong> <span class="accent">&amp;</span> <strong>Пашаонт тестер</strong>
         </p>
-        <p>Сделано с <span class="heart">♥</span> для геймеров и энтузиастов &bull; 2026</p>
+        <p>Сделано с <span class="heart">♥</span> для энтузиастов &bull; 2026</p>
     </footer>
 
     <button id="back-to-top" title="Наверх">↑</button>
@@ -1955,7 +1960,7 @@
             { text: "Я не знаю, кто я, но я точно знаю, что я не тот, кого вы ищете.", author: "Стехман" },
             { text: "Мой компьютер работает на 100% быстрее после того, как я выключил все фоновые процессы... включая себя.", author: "Стехман" },
             { text: "Если вы не можете объяснить это своей бабушке, значит, вы не понимаете это сами. А если ваша бабушка — программист, то просто скажите ей: 'Это как Windows, только без слежки'.", author: "Стехман" },
-            { text: "Я люблю Windows 10, но только когда она не обновляется.", author: "Стехман" },
+            { text: "Я люблю Windows, но только когда она не обновляется.", author: "Стехман" },
             { text: "Самый быстрый способ ускорить компьютер — это выключить его и пойти погулять. Но мы не ищем лёгких путей, мы ищем лёгких путей.", author: "Стехман" },
             { text: "Оптимизация — это когда у вас 100% диска, а вы всё равно не можете найти, куда делось место.", author: "Стехман" },
             { text: "Я переустановил Windows 10 раз. Мне стало легче.", author: "Стехман" },
@@ -2119,9 +2124,9 @@
 
         // ===== ВИКИ =====
         const wikiData = [
-            { title: "Что такое Zetuos10 Lite?", tags: ["общее"], content: "Легковесная сборка Windows 10." },
+            { title: "Что такое ZetuOS 10 Lite?", tags: ["общее"], content: "Легковесная сборка Windows 10." },
             { title: "Установка с флешки", tags: ["установка"], content: "Запишите ISO через Rufus." },
-            { title: "Отключение телеметрии", tags: ["приватность"], content: "В Zetuos10 телеметрия полностью отключена." },
+            { title: "Отключение телеметрии", tags: ["приватность"], content: "В ZetuOS телеметрия полностью отключена." },
             { title: "Минимальные требования", tags: ["требования"], content: "1 ГГц CPU, 1 ГБ ОЗУ." },
             { title: "Рекомендуемые требования", tags: ["требования"], content: "i3/Ryzen 3, 4 ГБ ОЗУ." },
             { title: "Что такое ZetuTweaker?", tags: ["программы"], content: "Утилита для настройки Windows." },
@@ -2198,14 +2203,13 @@
         function getAIResponse(q) {
             const lower = q.toLowerCase();
             if (lower.includes('привет')) return 'Привет! Я ZetuAI. Чем могу помочь?';
-            if (lower.includes('zetuos10')) return 'Zetuos10 Lite — это лёгкая сборка Windows 10 с оптимизацией и приватностью.';
+            if (lower.includes('zetuos')) return 'ZetuOS — это линейка оптимизированных сборок Windows. 10 Lite уже доступна, 8.1 Lite тоже, а 11 Lite в разработке.';
             if (lower.includes('установка')) return 'Скачайте ISO, запишите через Rufus, загрузитесь с флешки и установите.';
             if (lower.includes('оптимизация')) return 'Используйте ZetuCommand — скрипт выполнит более 50 действий по ускорению.';
             if (lower.includes('требования')) return 'Минимальные: 1 ГГц CPU, 1 ГБ ОЗУ. Рекомендуемые: i3/Ryzen 3, 4 ГБ ОЗУ.';
             if (lower.includes('игры')) return 'Прирост FPS до 20% благодаря оптимизации.';
-            if (lower.includes('погода')) return 'Погоду мы убрали с сайта, чтобы не нагружать ваш браузер. Но я всегда могу ответить на вопросы о науке!';
             if (lower.includes('наука')) return 'Наука — это прекрасно! Что именно вас интересует: физика, химия, биология?';
-            return 'Интересный вопрос! Я пока учусь, но могу помочь с Zetuos10, настройками или ответить на общие вопросы.';
+            return 'Интересный вопрос! Я пока учусь, но могу помочь с ZetuOS, настройками или ответить на общие вопросы.';
         }
 
         // ===== ZetuCommand =====
@@ -2428,9 +2432,9 @@
                 document.querySelector('.nav-btn[data-page="page-home"]').classList.add('active');
             }
             setTimeout(() => {
-                showToast('🚀 Zetuos10 Lite уже здесь! Скачайте сейчас.', 'success');
+                showToast('🚀 ZetuOS 10 Lite уже здесь! Скачайте сейчас.', 'success');
             }, 1200);
-            console.log('🚀 Zetuos10 Lite — сайт загружен!');
+            console.log('🚀 ZetuOS — сайт загружен!');
         });
     </script>
 </body>
