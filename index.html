@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zetuos10 Lite — Официальный релиз</title>
+    <title>Zetuos10 Lite — Релиз</title>
     <style>
-        /* ===== Глобальные ===== */
+        /* ===== Глобальные переменные ===== */
         :root {
             --bg: #080a12;
-            --surface: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.06);
+            --surface: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.07);
             --accent: #45f3ff;
-            --accent-glow: rgba(69, 243, 255, 0.25);
+            --accent-glow: rgba(69, 243, 255, 0.2);
             --text: #f0f0f5;
             --text-secondary: #8a8d9e;
             --warning: #ff4b5a;
             --radius: 16px;
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-            --transition: 0.35s;
-            --font-family: 'Segoe UI', system-ui, sans-serif;
-            --font-size-base: 1rem;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --transition: 0.3s;
+            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         .light-theme {
             --bg: #f2f4f8;
-            --surface: rgba(255, 255, 255, 0.6);
+            --surface: rgba(255, 255, 255, 0.5);
             --border: rgba(0, 0, 0, 0.08);
             --text: #12141c;
             --text-secondary: #4a4d5e;
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
         }
 
+        /* ===== Общие ===== */
         * {
             margin: 0;
             padding: 0;
@@ -43,71 +43,28 @@
             background: var(--bg);
             color: var(--text);
             font-family: var(--font-family);
-            font-size: var(--font-size-base);
-            overflow-x: hidden;
+            font-size: 1rem;
             line-height: 1.6;
-            transition: background 0.4s, color 0.4s, font-size 0.3s;
+            transition: background 0.4s, color 0.4s;
+            overflow-x: hidden;
         }
         ::selection {
             background: var(--accent);
             color: #0a0b14;
         }
 
-        /* ===== Фон (исправлен) ===== */
+        /* ===== Фоновое свечение (лёгкое) ===== */
         .bg-glow {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(69, 243, 255, 0.03), transparent 70%),
+            background: radial-gradient(circle at 50% 50%, rgba(69, 243, 255, 0.04), transparent 70%),
                 radial-gradient(circle at 30% 20%, rgba(69, 243, 255, 0.02), transparent 50%),
                 radial-gradient(circle at 70% 80%, rgba(69, 243, 255, 0.02), transparent 50%);
             pointer-events: none;
             z-index: 0;
-        }
-
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.3;
-        }
-
-        .interactive-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .i-star {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-            cursor: default;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-        }
-        .i-star.active {
-            background: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
-            transform: scale(1.5);
-        }
-        .i-star:hover {
-            background: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
-            transform: scale(2);
         }
 
         /* ===== Прогресс-бар ===== */
@@ -130,8 +87,8 @@
             left: 0;
             width: 100%;
             padding: 14px 6%;
-            background: rgba(8, 10, 18, 0.75);
-            backdrop-filter: blur(18px) saturate(1.2);
+            background: rgba(8, 10, 18, 0.8);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
             display: flex;
@@ -143,11 +100,11 @@
             background: rgba(242, 244, 248, 0.85);
         }
         nav.scrolled {
-            background: rgba(8, 10, 18, 0.92);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(8, 10, 18, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
         .light-theme nav.scrolled {
-            background: rgba(242, 244, 248, 0.95);
+            background: rgba(242, 244, 248, 0.96);
         }
 
         .logo {
@@ -296,7 +253,7 @@
             margin: -30px auto 50px;
         }
 
-        /* ===== Hero (релиз) ===== */
+        /* ===== Hero ===== */
         .hero {
             min-height: 85vh;
             display: flex;
@@ -311,7 +268,7 @@
             display: inline-block;
             padding: 6px 20px;
             border-radius: 40px;
-            background: rgba(69, 243, 255, 0.15);
+            background: rgba(69, 243, 255, 0.12);
             border: 1px solid var(--accent);
             color: var(--accent);
             font-size: 0.9rem;
@@ -331,7 +288,6 @@
                 transform: scale(1.05);
             }
         }
-
         .hero h1 {
             font-size: 5rem;
             font-weight: 900;
@@ -349,7 +305,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .hero p {
             font-size: 1.3rem;
             color: var(--text-secondary);
@@ -357,7 +312,6 @@
             margin-bottom: 36px;
             line-height: 1.7;
         }
-
         .hero .download-info {
             color: var(--text-secondary);
             font-size: 0.95rem;
@@ -366,7 +320,6 @@
         .hero .download-info strong {
             color: var(--text);
         }
-
         .hero-actions {
             display: flex;
             gap: 16px;
@@ -441,12 +394,12 @@
             padding: 32px 28px;
             transition: 0.3s;
             text-align: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(4px);
         }
         .feature-card:hover {
             border-color: var(--accent);
             transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
         }
         .feature-card .icon {
             font-size: 3rem;
@@ -466,7 +419,7 @@
             line-height: 1.7;
         }
 
-        /* ===== Виджет цитат Стехмана ===== */
+        /* ===== Цитаты Стехмана ===== */
         .stehman-quote {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -476,6 +429,7 @@
             margin: 0 auto 60px;
             text-align: center;
             transition: 0.3s;
+            backdrop-filter: blur(4px);
         }
         .stehman-quote:hover {
             border-color: var(--accent);
@@ -683,7 +637,7 @@
             color: var(--text-secondary);
         }
 
-        /* ===== Вики с поиском ===== */
+        /* ===== Вики ===== */
         .wiki-container {
             max-width: 1000px;
             margin: 0 auto;
@@ -999,44 +953,6 @@
             color: var(--text-secondary);
         }
 
-        /* ===== Виджеты инструментов ===== */
-        .widgets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
-        }
-        .widget {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px 22px;
-            transition: 0.3s;
-        }
-        .widget:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-        .widget h4 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .widget h4 span {
-            color: var(--accent);
-        }
-        .widget .value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .widget .sub {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
         /* ===== Спецификации ===== */
         .specs-grid {
             display: grid;
@@ -1101,7 +1017,7 @@
         .download-card:hover {
             border-color: var(--accent);
             transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
         }
         .download-card .version {
             font-size: 2rem;
@@ -1127,6 +1043,11 @@
         .status.not-started {
             background: rgba(255, 75, 90, 0.15);
             color: var(--warning);
+        }
+        .status.started {
+            background: rgba(255, 200, 0, 0.15);
+            color: #fbbf24;
+            border: 1px solid #fbbf24;
         }
 
         .programs-grid {
@@ -1195,7 +1116,7 @@
             max-width: 600px;
             margin: 0 auto 80px;
             text-align: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(4px);
             transition: 0.3s;
         }
         .subscribe-form:hover {
@@ -1244,6 +1165,7 @@
             font-size: 1.1rem;
             color: var(--text-secondary);
             font-style: italic;
+            backdrop-filter: blur(4px);
         }
         .fact-box .fact-icon {
             font-size: 2rem;
@@ -1297,6 +1219,17 @@
         }
         footer .heart {
             color: var(--warning);
+        }
+        footer .creators {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        footer .creators strong {
+            color: var(--text);
+        }
+        footer .creators .accent {
+            color: var(--accent);
         }
 
         /* ===== Кнопка наверх ===== */
@@ -1502,9 +1435,6 @@
             .programs-grid {
                 grid-template-columns: 1fr;
             }
-            .widgets-grid {
-                grid-template-columns: 1fr 1fr;
-            }
             .ai-chat .messages .msg {
                 max-width: 100%;
             }
@@ -1517,6 +1447,9 @@
             .features-grid {
                 grid-template-columns: 1fr;
             }
+            footer .footer-links {
+                gap: 14px;
+            }
         }
         @media (max-width: 420px) {
             .hero h1 {
@@ -1525,13 +1458,13 @@
             .logo {
                 font-size: 1.2rem;
             }
-            .widgets-grid {
-                grid-template-columns: 1fr;
-            }
             .team-single .avatar {
                 width: 80px;
                 height: 80px;
                 font-size: 2rem;
+            }
+            .modal {
+                padding: 24px 18px;
             }
         }
         .text-accent {
@@ -1553,8 +1486,6 @@
     <!-- Фон -->
     <div class="bg-glow"></div>
     <div id="progress-bar"></div>
-    <canvas id="particles-canvas"></canvas>
-    <div class="interactive-stars" id="interactiveStars"></div>
 
     <!-- ===== НАВИГАЦИЯ ===== -->
     <nav id="navbar">
@@ -1581,7 +1512,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ГЛАВНАЯ (РЕЛИЗ) -->
+    <!-- СТРАНИЦА: ГЛАВНАЯ -->
     <!-- ============================================================ -->
     <section class="page active" id="page-home">
         <div class="hero">
@@ -1594,7 +1525,7 @@
             <!-- Информация о файле -->
             <div class="download-info">
                 <strong>Версия:</strong> 22H2 x64 &bull;
-                <strong>Размер ISO:</strong> 1.9 ГБ &bull;
+                <strong>Размер ISO:</strong> 4.0 ГБ &bull;
                 <strong>Обновлено:</strong> 15 июля 2026
             </div>
 
@@ -1633,8 +1564,8 @@
                 </div>
                 <div class="feature-card">
                     <span class="icon">💾</span>
-                    <h3><span>#</span>Минимальный размер</h3>
-                    <p>ISO-образ весит всего <strong>1.9 ГБ</strong>! Система занимает на 40% меньше места на диске.</p>
+                    <h3><span>#</span>Оптимальный размер</h3>
+                    <p>ISO-образ весит <strong>4.0 ГБ</strong> — всё необходимое для работы и игр без компромиссов.</p>
                 </div>
                 <div class="feature-card">
                     <span class="icon">🎮</span>
@@ -1673,7 +1604,7 @@
                         <li>Потребление ОЗУ 0.8–1.1 ГБ</li>
                         <li>Обновления по вашему запросу</li>
                         <li>Полная приватность без слежки</li>
-                        <li>Размер ISO всего 1.9 ГБ</li>
+                        <li>Размер ISO 4.0 ГБ</li>
                     </ul>
                 </div>
             </div>
@@ -1711,7 +1642,7 @@
                 <div class="options" id="pollOptions">
                     <div class="option" data-option="0"><span>⚡ Производительность</span><span class="vote-count">0%</span></div>
                     <div class="option" data-option="1"><span>🔒 Приватность</span><span class="vote-count">0%</span></div>
-                    <div class="option" data-option="2"><span>💾 Компактность</span><span class="vote-count">0%</span></div>
+                    <div class="option" data-option="2"><span>💾 Оптимальный размер</span><span class="vote-count">0%</span></div>
                     <div class="option" data-option="3"><span>🎮 Игровая оптимизация</span><span class="vote-count">0%</span></div>
                 </div>
                 <div style="margin-top:12px; color:var(--text-secondary);">Всего голосов: <span id="totalVotes">0</span></div>
@@ -1738,14 +1669,6 @@
                     <label>Тёмная тема</label>
                     <div class="toggle-switch active" id="themeToggleSwitch"><div class="slider"></div></div>
                 </div>
-                <div class="setting-group">
-                    <label>Показывать частицы</label>
-                    <div class="toggle-switch active" id="particlesToggle"><div class="slider"></div></div>
-                </div>
-                <div class="setting-group">
-                    <label>Автопрокрутка галереи</label>
-                    <div class="toggle-switch active" id="autoSlideToggle"><div class="slider"></div></div>
-                </div>
             </div>
 
             <!-- Мини-игра кликер -->
@@ -1758,12 +1681,12 @@
             </div>
 
             <!-- Команда -->
-            <h2 class="section-title">Создатель <span>проекта</span></h2>
+            <h2 class="section-title">Создатели <span>проекта</span></h2>
             <div class="team-single">
                 <div class="avatar">A</div>
-                <div class="name">Alxiizzz</div>
-                <div class="role">Главный разработчик и идеолог</div>
-                <div class="bio">Одиночка, который создал Zetuos10 Lite с нуля. Вдохновляюсь минимализмом и производительностью.</div>
+                <div class="name">Alxiizzz <span style="font-size:0.8rem; color:var(--text-secondary);">&amp; Пашаонт тестер</span></div>
+                <div class="role">Главный разработчик и тестер</div>
+                <div class="bio">Alxiizzz — создатель Zetuos10 Lite. Пашаонт тестер — главный бета-тестер и идеолог улучшений.</div>
             </div>
 
             <!-- Подписка на новости -->
@@ -1797,7 +1720,7 @@
                     <p class="desc">
                         Лёгкая, быстрая и приватная сборка на базе Windows 10.<br />
                         <strong>Версия:</strong> 22H2 x64<br />
-                        <strong>Размер:</strong> 1.9 ГБ
+                        <strong>Размер:</strong> 4.0 ГБ
                     </p>
                     <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
                 </div>
@@ -1808,10 +1731,10 @@
                     <button class="btn btn--small btn--ghost" onclick="showToast('Разработка идёт, следите за новостями!', 'error')">Ожидается</button>
                 </div>
                 <div class="download-card">
-                    <div class="version">Zetuos8.1</div>
-                    <div class="status not-started">❌ В планах</div>
-                    <p class="desc">Классическая сборка для старых ПК на основе Windows 8.1.</p>
-                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка ещё не начата.', 'error')">Ожидается</button>
+                    <div class="version">Zetuos8.1 Lite</div>
+                    <div class="status started">🔄 Разработка начинается</div>
+                    <p class="desc">Классическая сборка для старых ПК на основе Windows 8.1. Работа над проектом стартует в ближайшее время.</p>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка начинается! Следите за анонсами.', 'success')">Скоро</button>
                 </div>
             </div>
         </div>
@@ -1838,7 +1761,7 @@
                         @echo off
                         title ZetuCommand - Оптимизатор
                         echo [*] Начинаем оптимизацию...
-                        :: ... (полный скрипт из предыдущей версии)
+                        :: ... (полный скрипт)
                         echo [✔] Готово!
                         pause
                     </div>
@@ -1852,7 +1775,7 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ВИКИ (с поиском) -->
+    <!-- СТРАНИЦА: ВИКИ -->
     <!-- ============================================================ -->
     <section class="page" id="page-wiki">
         <div class="container">
@@ -1895,18 +1818,13 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ИНСТРУМЕНТЫ -->
+    <!-- СТРАНИЦА: ИНСТРУМЕНТЫ (без погоды) -->
     <!-- ============================================================ -->
     <section class="page" id="page-tools">
         <div class="container">
             <h2 class="section-title">Полезные <span>инструменты</span></h2>
-            <div class="widgets-grid">
-                <div class="widget">
-                    <h4><span>🌤</span> Погода</h4>
-                    <div class="value" id="weatherTemp">--°C</div>
-                    <div class="sub" id="weatherDesc">Загрузка...</div>
-                    <button class="btn btn--small btn--ghost" onclick="updateWeather()">Обновить</button>
-                </div>
+            <div class="widgets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:30px; margin-bottom:80px;">
+                <!-- Задачи -->
                 <div class="widget">
                     <h4><span>📋</span> Задачи</h4>
                     <div style="display:flex; gap:6px; margin-bottom:10px;">
@@ -1915,6 +1833,7 @@
                     </div>
                     <ul id="taskList" style="list-style:none; text-align:left; color:var(--text-secondary);"></ul>
                 </div>
+                <!-- Калькулятор -->
                 <div class="widget">
                     <h4><span>🧮</span> Калькулятор</h4>
                     <input type="text" id="calcDisplay" style="width:100%; padding:10px; font-size:1.5rem; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); text-align:right; margin-bottom:10px;" readonly />
@@ -1938,12 +1857,14 @@
                     </div>
                     <button class="btn btn--small btn--ghost" onclick="calcClear()" style="margin-top:6px; width:100%;">C</button>
                 </div>
+                <!-- Цитата дня -->
                 <div class="widget">
                     <h4><span>📜</span> Цитата дня</h4>
                     <div class="sub" id="quoteText">Загрузка...</div>
                     <div class="sub" style="font-size:0.8rem;" id="quoteAuthor"></div>
                     <button class="btn btn--small btn--ghost" onclick="updateQuote()">Обновить</button>
                 </div>
+                <!-- Угадай число -->
                 <div class="widget">
                     <h4><span>🎯</span> Угадай число</h4>
                     <p style="color:var(--text-secondary);">Я загадал число от 1 до 100.</p>
@@ -1952,6 +1873,7 @@
                     <div id="guessResult" style="margin-top:8px; color:var(--text-secondary);"></div>
                     <button class="btn btn--small btn--ghost" onclick="resetGuess()" style="margin-top:6px;">Новая игра</button>
                 </div>
+                <!-- Будильник -->
                 <div class="widget">
                     <h4><span>⏰</span> Будильник</h4>
                     <input type="time" id="alarmTime" value="08:00" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text);" />
@@ -1974,6 +1896,9 @@
             <a onclick="showToast('Связь: support@zetuos10.ru', 'success')">Поддержка</a>
         </div>
         <p>Zetuos10 Lite — неофициальная сборка на основе Windows 10. Все права принадлежат Microsoft.</p>
+        <p class="creators">
+            Создатели: <strong>Alxiizzz</strong> <span class="accent">&amp;</span> <strong>Пашаонт тестер</strong>
+        </p>
         <p>Сделано с <span class="heart">♥</span> для геймеров и энтузиастов &bull; 2026</p>
     </footer>
 
@@ -1981,12 +1906,10 @@
     <div id="toast-container"></div>
 
     <!-- ============================================================ -->
-    <!-- JAVASCRIPT (ВСЯ ЛОГИКА) -->
+    <!-- JAVASCRIPT -->
     <!-- ============================================================ -->
     <script>
-        // ============================================================
-        // 1. ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
-        // ============================================================
+        // ===== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ =====
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -2002,9 +1925,7 @@
             });
         });
 
-        // ============================================================
-        // 2. ГАМБУРГЕР
-        // ============================================================
+        // ===== ГАМБУРГЕР =====
         document.getElementById('hamburger').addEventListener('click', function() {
             document.getElementById('navLinks').classList.toggle('open');
         });
@@ -2016,9 +1937,7 @@
             }
         });
 
-        // ============================================================
-        // 3. СКРОЛЛ
-        // ============================================================
+        // ===== СКРОЛЛ =====
         window.addEventListener('scroll', function() {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
             const btn = document.getElementById('back-to-top');
@@ -2031,9 +1950,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ============================================================
-        // 4. ЦИТАТЫ СТЕХМАНА
-        // ============================================================
+        // ===== ЦИТАТЫ СТЕХМАНА =====
         const stehmanQuotes = [
             { text: "Я не знаю, кто я, но я точно знаю, что я не тот, кого вы ищете.", author: "Стехман" },
             { text: "Мой компьютер работает на 100% быстрее после того, как я выключил все фоновые процессы... включая себя.", author: "Стехман" },
@@ -2060,32 +1977,7 @@
             displayStehmanQuote(currentStehmanIndex);
         }
 
-        // ============================================================
-        // 5. СЛУЧАЙНЫЙ ФАКТ (для главной)
-        // ============================================================
-        const facts = [
-            "Windows 10 весит ~20 ГБ, а Zetuos10 Lite — всего 1.9 ГБ.",
-            "Удаление телеметрии ускоряет загрузку системы на 15%.",
-            "Zetuos10 Lite работает на ПК с 1 ГБ ОЗУ.",
-            "В сборке отключено более 80 фоновых служб.",
-            "Прирост FPS в играх составляет до 20%.",
-            "Система не требует активации и работает без ограничений."
-        ];
-        let factIndex = 0;
-
-        function showRandomFact() {
-            const el = document.getElementById('factText');
-            let newFact;
-            do {
-                newFact = facts[Math.floor(Math.random() * facts.length)];
-            } while (newFact === el.textContent && facts.length > 1);
-            el.textContent = newFact;
-        }
-        // showRandomFact(); // вызываем при загрузке
-
-        // ============================================================
-        // 6. ГАЛЕРЕЯ (слайдер)
-        // ============================================================
+        // ===== ГАЛЕРЕЯ (СЛАЙДЕР) =====
         let slideIndex = 0;
         const slides = document.querySelectorAll('.gallery-slider .slide');
         const totalSlides = slides.length;
@@ -2110,31 +2002,15 @@
 
         function changeSlide(dir) { goToSlide(slideIndex + dir); }
 
-        let autoSlideInterval = null;
-        const autoSlideToggle = document.getElementById('autoSlideToggle');
-        let autoSlideEnabled = localStorage.getItem('autoSlideEnabled') !== 'false';
-
-        function toggleAutoSlide(enable) {
-            if (autoSlideInterval) { clearInterval(autoSlideInterval);
-                autoSlideInterval = null; }
-            if (enable) { autoSlideInterval = setInterval(() => changeSlide(1), 5000); }
-            autoSlideToggle.classList.toggle('active', enable);
-            localStorage.setItem('autoSlideEnabled', enable.toString());
-        }
-        toggleAutoSlide(autoSlideEnabled);
-        autoSlideToggle.addEventListener('click', function() {
-            autoSlideEnabled = !autoSlideEnabled;
-            toggleAutoSlide(autoSlideEnabled);
-            showToast(autoSlideEnabled ? '▶️ Автопрокрутка включена' : '⏸️ Автопрокрутка выключена', 'success');
-        });
+        // Автопрокрутка
+        let autoSlideInterval = setInterval(() => changeSlide(1), 5000);
         const slider = document.getElementById('gallerySlider');
-        slider.addEventListener('mouseenter', () => { if (autoSlideInterval) clearInterval(autoSlideInterval); });
-        slider.addEventListener('mouseleave', () => { if (autoSlideEnabled) autoSlideInterval = setInterval(() => changeSlide(
-                1), 5000); });
+        slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        slider.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+        });
 
-        // ============================================================
-        // 7. ОПРОС
-        // ============================================================
+        // ===== ОПРОС =====
         const pollData = JSON.parse(localStorage.getItem('pollData')) || { votes: [0, 0, 0, 0], total: 0 };
         const pollOptions = document.querySelectorAll('.poll .option');
         let userVoted = localStorage.getItem('userVoted') === 'true';
@@ -2162,9 +2038,7 @@
         });
         updatePoll();
 
-        // ============================================================
-        // 8. ПОДПИСКА
-        // ============================================================
+        // ===== ПОДПИСКА =====
         function subscribe() {
             const email = document.getElementById('emailInput').value.trim();
             if (!email || !email.includes('@')) { showToast('❌ Введите корректный email', 'error'); return; }
@@ -2176,9 +2050,7 @@
             document.getElementById('emailInput').value = '';
         }
 
-        // ============================================================
-        // 9. КЛИКЕР
-        // ============================================================
+        // ===== КЛИКЕР =====
         let clickerScore = parseInt(localStorage.getItem('clickerScore')) || 0;
         document.getElementById('clickerScore').textContent = clickerScore;
         document.getElementById('clickerBtn').addEventListener('click', function() {
@@ -2196,9 +2068,7 @@
             showToast('🔄 Кликер сброшен', 'success');
         }
 
-        // ============================================================
-        // 10. НАСТРОЙКИ
-        // ============================================================
+        // ===== НАСТРОЙКИ =====
         const fontSizeRange = document.getElementById('fontSizeRange');
         fontSizeRange.addEventListener('input', function() {
             document.documentElement.style.setProperty('--font-size-base', this.value + 'rem');
@@ -2241,35 +2111,13 @@
             applyTheme(isLight);
         });
 
-        const particlesToggle = document.getElementById('particlesToggle');
-        let particlesVisible = localStorage.getItem('particlesVisible') !== 'false';
-        const canvas = document.getElementById('particles-canvas');
-        const starsContainer = document.getElementById('interactiveStars');
-
-        function toggleParticles(show) {
-            canvas.style.display = show ? 'block' : 'none';
-            starsContainer.style.display = show ? 'block' : 'none';
-            particlesToggle.classList.toggle('active', show);
-            localStorage.setItem('particlesVisible', show.toString());
-        }
-        toggleParticles(particlesVisible);
-        particlesToggle.addEventListener('click', function() {
-            particlesVisible = !particlesVisible;
-            toggleParticles(particlesVisible);
-            showToast(particlesVisible ? '✨ Частицы включены' : '✨ Частицы выключены', 'success');
-        });
-
-        // ============================================================
-        // 11. СЧЁТЧИК ПОСЕЩЕНИЙ
-        // ============================================================
+        // ===== СЧЁТЧИК ПОСЕЩЕНИЙ =====
         let visits = parseInt(localStorage.getItem('visits')) || 0;
         visits++;
         localStorage.setItem('visits', visits.toString());
         document.getElementById('visitCounter').textContent = `👁️ Посещений: ${visits}`;
 
-        // ============================================================
-        // 12. ВИКИ (50+ статей)
-        // ============================================================
+        // ===== ВИКИ =====
         const wikiData = [
             { title: "Что такое Zetuos10 Lite?", tags: ["общее"], content: "Легковесная сборка Windows 10." },
             { title: "Установка с флешки", tags: ["установка"], content: "Запишите ISO через Rufus." },
@@ -2283,14 +2131,6 @@
             { title: "Очистка временных файлов", tags: ["очистка"], content: "Используйте очистку диска." },
             { title: "Настройка приоритета процессов", tags: ["процессы"], content: "Установите высокий приоритет для игр." },
             { title: "Отключение анимаций", tags: ["анимация"], content: "В параметрах производительности." },
-            { title: "Дефрагментация диска", tags: ["диск"], content: "Для HDD — дефрагментируйте." },
-            { title: "Настройка виртуальной памяти", tags: ["память"], content: "Установите размер вручную." },
-            { title: "Мониторинг системы", tags: ["мониторинг"], content: "Используйте диспетчер задач." },
-            { title: "Создание точки восстановления", tags: ["восстановление"], content: "Создайте точку перед установкой." },
-            { title: "Смена пароля", tags: ["безопасность"], content: "Настройки -> Учётные записи." },
-            { title: "Настройка сети", tags: ["сеть"], content: "Используйте стандартные настройки." },
-            { title: "Установка драйверов", tags: ["драйвера"], content: "Скачайте с сайта производителя." },
-            { title: "Активация Windows", tags: ["активация"], content: "Не требуется, система работает без ограничений." },
         ];
 
         function generateWikiEntries() {
@@ -2328,11 +2168,7 @@
             showToast('🔍 Поиск сброшен', 'success');
         }
 
-        // ============================================================
-        // 13. ZetuAI (универсальный)
-        // ============================================================
-        let chatHistory = [];
-
+        // ===== ZetuAI =====
         function askAI() {
             const input = document.getElementById('aiInput');
             const question = input.value.trim();
@@ -2343,8 +2179,6 @@
             userMsg.className = 'msg user';
             userMsg.innerHTML = `<div class="avatar">👤</div><div class="bubble">${question}</div>`;
             messages.appendChild(userMsg);
-            chatHistory.push({ role: 'user', content: question });
-            if (chatHistory.length > 5) chatHistory.shift();
 
             const typing = document.getElementById('typingIndicator');
             typing.style.display = 'flex';
@@ -2352,59 +2186,29 @@
 
             setTimeout(() => {
                 typing.style.display = 'none';
-                const answer = getAIResponse(question, chatHistory);
+                const answer = getAIResponse(question);
                 const aiMsg = document.createElement('div');
                 aiMsg.className = 'msg ai';
                 aiMsg.innerHTML = `<div class="avatar">🧠</div><div class="bubble">${answer}</div>`;
                 messages.appendChild(aiMsg);
-                chatHistory.push({ role: 'ai', content: answer });
-                if (chatHistory.length > 5) chatHistory.shift();
                 messages.scrollTop = messages.scrollHeight;
             }, 500 + Math.random() * 800);
         }
 
-        function getAIResponse(q, history) {
+        function getAIResponse(q) {
             const lower = q.toLowerCase();
-            // Универсальные ответы
-            const responses = {
-                'наука|физика|химия|биология|астрономия|квант|эйнштейн|ньютон|молекула|днк|ген|эволюция|теория|эксперимент': 'Наука — это способ познания мира. От квантовой физики до биологии, всё взаимосвязано. Хотите узнать больше о конкретной области?',
-                'история|война|империя|революция|средневековье|древний|рим|греция|египет|феодализм|колонизация|наполеон|цезарь': 'История полна удивительных событий. Древний Рим, средневековая Европа, Вторая мировая — каждая эпоха оставила свой след.',
-                'философия|платон|сократ|аристотель|ницше|кант|смысл|бытие|сознание|мораль|этика|экзистенция': 'Философия учит нас задавать правильные вопросы. Сократ говорил: «Я знаю, что ничего не знаю». Что вас интересует?',
-                'технологии|ии|нейросеть|робот|автоматизация|блокчейн|криптовалюта|интернет|программирование|python|java|c++|алгоритм': 'Технологии стремительно развиваются. Искусственный интеллект, нейросети, блокчейн — это инструменты, меняющие мир.',
-                'здоровье|болезнь|лечение|витамин|спорт|фитнес|диета|сон|стресс|медицина|врач|таблетка|профилактика': 'Здоровье — основа качества жизни. Регулярные нагрузки, сбалансированное питание и полноценный сон творят чудеса.',
-                'спорт|футбол|хоккей|теннис|баскетбол|бег|тренировка|чемпионат|олимпиада|рекорд|команда|игра': 'Спорт объединяет людей. Каждый вид спорта имеет свои легенды. Вы за кого болеете?',
-                'еда|рецепт|блюдо|кулинария|готовка|вкус|ресторан|пицца|паста|суши|бургер|десерт|шоколад|кофе|чай': 'Кулинария — это искусство. От простой яичницы до изысканного десерта. Вы любите экспериментировать на кухне?',
-                'путешествие|отпуск|страна|город|достопримечательность|туризм|рейс|отель|пляж|горы|экскурсия': 'Путешествия расширяют горизонты. Каждая страна — это новая культура, кухня и история. Куда мечтаете поехать?',
-                'психология|эмоция|чувство|личность|характер|отношения|любовь|дружба|общение|конфликт|мотивация|успех': 'Психология помогает понять себя и других. Если вас что-то беспокоит, я могу дать несколько советов.',
-                'космос|звезда|галактика|планета|ракета|астронавт|спутник|луна|марс|вселенная|чёрная дыра|солнце': 'Космос — это бесконечное пространство, полное загадок. Чёрные дыры, галактики, поиск жизни на Марсе — всё это захватывает.',
-                'искусство|живопись|музыка|литература|театр|кино|скульптура|архитектура|ван гог|да винчи|бетховен|моцарт|толстой|достоевский': 'Искусство вдохновляет и заставляет задуматься. Что вам ближе: живопись, музыка или литература?',
-                'экология|природа|климат|загрязнение|переработка|энергия|солнце|ветер|вода|лес|животное|растение|углерод': 'Экология — это наш общий дом. Каждый из нас может внести вклад: сортировать мусор, экономить воду.',
-                'экономика|деньги|бизнес|инвестиция|рынок|кризис|инфляция|акция|банк|финанс|стартап|бюджет|зарплата|налог': 'Экономика управляет миром. Я могу объяснить основы или обсудить текущие тренды.',
-                'образование|школа|университет|учитель|экзамен|студент|урок|знание|курс|дистанционное|обучение|лекция|диплом': 'Образование — это фундамент будущего. Сейчас доступно множество онлайн-курсов. Что вы хотите изучить?',
-                'семья|родители|дети|брак|воспитание|отношения|дом|быт|родственник|свадьба|развод|любовь|забота': 'Семья — это самое ценное. Отношения с близкими требуют внимания и любви. Я здесь, чтобы вас выслушать.',
-                'карьера|работа|профессия|должность|резюме|собеседование|коллега|начальник|команда|проект|зарплата|повышение|увольнение': 'Карьера — это путь самореализации. Важно найти то дело, которое приносит удовлетворение.',
-            };
-
-            for (const [key, value] of Object.entries(responses)) {
-                const keys = key.split('|');
-                if (keys.some(k => lower.includes(k))) {
-                    return value;
-                }
-            }
-
-            // Общие ответы
-            const general = [
-                "Интересный вопрос! Я ещё учусь, но готов обсудить любую тему. Уточните, пожалуйста, что именно вас интересует.",
-                "Хм, я не совсем понял. Давайте поговорим о чём-то другом — например, о космосе или технологиях.",
-                "Замечательный вопрос! Давайте подумаем вместе. Возможно, вы имеете в виду что-то конкретное?",
-                "Честно говоря, я не силён в этой теме. Но давайте поговорим о Zetuos10 — она лёгкая, быстрая и приватная.",
-            ];
-            return general[Math.floor(Math.random() * general.length)];
+            if (lower.includes('привет')) return 'Привет! Я ZetuAI. Чем могу помочь?';
+            if (lower.includes('zetuos10')) return 'Zetuos10 Lite — это лёгкая сборка Windows 10 с оптимизацией и приватностью.';
+            if (lower.includes('установка')) return 'Скачайте ISO, запишите через Rufus, загрузитесь с флешки и установите.';
+            if (lower.includes('оптимизация')) return 'Используйте ZetuCommand — скрипт выполнит более 50 действий по ускорению.';
+            if (lower.includes('требования')) return 'Минимальные: 1 ГГц CPU, 1 ГБ ОЗУ. Рекомендуемые: i3/Ryzen 3, 4 ГБ ОЗУ.';
+            if (lower.includes('игры')) return 'Прирост FPS до 20% благодаря оптимизации.';
+            if (lower.includes('погода')) return 'Погоду мы убрали с сайта, чтобы не нагружать ваш браузер. Но я всегда могу ответить на вопросы о науке!';
+            if (lower.includes('наука')) return 'Наука — это прекрасно! Что именно вас интересует: физика, химия, биология?';
+            return 'Интересный вопрос! Я пока учусь, но могу помочь с Zetuos10, настройками или ответить на общие вопросы.';
         }
 
-        // ============================================================
-        // 14. ZetuCommand
-        // ============================================================
+        // ===== ZetuCommand =====
         function copyAndRunCommand() {
             const script = document.getElementById('zetuCommandScript').textContent;
             navigator.clipboard.writeText(script).then(() => {
@@ -2441,9 +2245,7 @@
             }, 300);
         }
 
-        // ============================================================
-        // 15. ТОСТЫ
-        // ============================================================
+        // ===== ТОСТЫ =====
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -2457,9 +2259,7 @@
             }, 3500);
         }
 
-        // ============================================================
-        // 16. МОДАЛЬНОЕ ОКНО
-        // ============================================================
+        // ===== МОДАЛЬНОЕ ОКНО =====
         const modal = document.getElementById('welcomeModal');
         if (!localStorage.getItem('welcomeShown')) {
             modal.classList.add('open');
@@ -2473,132 +2273,7 @@
             if (e.target === this) closeModal();
         });
 
-        // ============================================================
-        // 17. ИНТЕРАКТИВНЫЕ ЗВЁЗДЫ
-        // ============================================================
-        function initInteractiveStars() {
-            const container = document.getElementById('interactiveStars');
-            const count = 30;
-            const stars = [];
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div');
-                star.className = 'i-star';
-                star.style.left = Math.random() * 95 + '%';
-                star.style.top = Math.random() * 95 + '%';
-                star.style.width = star.style.height = (Math.random() * 8 + 4) + 'px';
-                star.dataset.index = i;
-                container.appendChild(star);
-                stars.push(star);
-            }
-
-            function highlightNeighbors(index, active) {
-                const radius = 150;
-                const starEl = stars[index];
-                const rect = starEl.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                stars.forEach((s, idx) => {
-                    const r = s.getBoundingClientRect();
-                    const sx = r.left + r.width / 2;
-                    const sy = r.top + r.height / 2;
-                    const dist = Math.sqrt((cx - sx) ** 2 + (cy - sy) ** 2);
-                    if (dist < radius && idx !== index) {
-                        s.classList.toggle('active', active);
-                    }
-                });
-                starEl.classList.toggle('active', active);
-            }
-
-            stars.forEach((star, index) => {
-                star.addEventListener('mouseenter', function() {
-                    highlightNeighbors(index, true);
-                });
-                star.addEventListener('mouseleave', function() {
-                    highlightNeighbors(index, false);
-                    stars.forEach(s => s.classList.remove('active'));
-                });
-            });
-
-            setInterval(() => {
-                const idx = Math.floor(Math.random() * stars.length);
-                const star = stars[idx];
-                star.style.opacity = '0.2';
-                setTimeout(() => star.style.opacity = '1', 300);
-            }, 2000);
-        }
-        initInteractiveStars();
-
-        // ============================================================
-        // 18. ЧАСТИЦЫ (canvas)
-        // ============================================================
-        function initParticles() {
-            const canvas = document.getElementById('particles-canvas');
-            const ctx = canvas.getContext('2d');
-            let width = canvas.width = window.innerWidth;
-            let height = canvas.height = window.innerHeight;
-            const particles = [];
-            for (let i = 0; i < 60; i++) {
-                particles.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1 });
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, width, height);
-                particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    if (p.x < 0 || p.x > width) p.vx *= -1;
-                    if (p.y < 0 || p.y > height) p.vy *= -1;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(69, 243, 255, 0.3)';
-                    ctx.fill();
-                });
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 120) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(69, 243, 255, ${0.08 * (1 - dist / 120)})`;
-                            ctx.lineWidth = 0.6;
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(draw);
-            }
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
-            draw();
-        }
-        initParticles();
-
-        // ============================================================
-        // 19. ИНСТРУМЕНТЫ (виджеты)
-        // ============================================================
-        // Погода
-        function updateWeather() {
-            const temps = [5, 10, 15, 20, 25, 30, -5, 0];
-            const descs = ['Солнечно', 'Облачно', 'Дождь', 'Снег', 'Ветрено', 'Ясно', 'Туман'];
-            const t = temps[Math.floor(Math.random() * temps.length)];
-            const d = descs[Math.floor(Math.random() * descs.length)];
-            document.getElementById('weatherTemp').textContent = t + '°C';
-            document.getElementById('weatherDesc').textContent = d;
-            localStorage.setItem('weather', JSON.stringify({ temp: t, desc: d }));
-        }
-        const savedWeather = localStorage.getItem('weather');
-        if (savedWeather) {
-            const w = JSON.parse(savedWeather);
-            document.getElementById('weatherTemp').textContent = w.temp + '°C';
-            document.getElementById('weatherDesc').textContent = w.desc;
-        } else { updateWeather(); }
-
+        // ===== ВИДЖЕТЫ (инструменты) =====
         // Задачи
         function loadTasks() {
             const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -2732,9 +2407,7 @@
             showToast(`⏰ Будильник установлен на ${time}`, 'success');
         }
 
-        // ============================================================
-        // 20. КЛАВИАТУРА
-        // ============================================================
+        // ===== КЛАВИАТУРА =====
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === '1') switchPage('page-home');
             if (e.ctrlKey && e.key === '2') switchPage('page-downloads');
@@ -2748,9 +2421,7 @@
             }
         });
 
-        // ============================================================
-        // 21. ИНИЦИАЛИЗАЦИЯ
-        // ============================================================
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
         document.addEventListener('DOMContentLoaded', function() {
             if (!document.querySelector('.page.active')) {
                 document.getElementById('page-home').classList.add('active');
@@ -2759,7 +2430,7 @@
             setTimeout(() => {
                 showToast('🚀 Zetuos10 Lite уже здесь! Скачайте сейчас.', 'success');
             }, 1200);
-            console.log('🚀 Zetuos10 Lite — релизный сайт загружен!');
+            console.log('🚀 Zetuos10 Lite — сайт загружен!');
         });
     </script>
 </body>
