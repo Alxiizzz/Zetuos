@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zetuos10 Lite — Официальный релиз</title>
+    <style>
+        /* ===== Глобальные ===== */
+        :root {
+            --bg: #080a12;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+            --accent: #45f3ff;
+            --accent-glow: rgba(69, 243, 255, 0.25);
+            --text: #f0f0f5;
+            --text-secondary: #8a8d9e;
+            --warning: #ff4b5a;
+            --radius: 16px;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --transition: 0.35s;
+            --font-family: 'Segoe UI', system-ui, sans-serif;
+            --font-size-base: 1rem;
+        }
+
+        .light-theme {
+            --bg: #f2f4f8;
+            --surface: rgba(255, 255, 255, 0.6);
+            --border: rgba(0, 0, 0, 0.08);
+            --text: #12141c;
+            --text-secondary: #4a4d5e;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background 0.4s, color 0.4s, font-size 0.3s;
+        }
+        ::selection {
+            background: var(--accent);
+            color: #0a0b14;
+        }
+
+        /* ===== Фон (исправлен) ===== */
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(69, 243, 255, 0.03), transparent 70%),
+                radial-gradient(circle at 30% 20%, rgba(69, 243, 255, 0.02), transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(69, 243, 255, 0.02), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .interactive-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .i-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            cursor: default;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
+        }
+        .i-star.active {
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+            transform: scale(1.5);
+        }
+        .i-star:hover {
+            background: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
+            transform: scale(2);
+        }
+
+        /* ===== Прогресс-бар ===== */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #00d4ff);
+            z-index: 10000;
+            width: 0%;
+            transition: width 0.2s;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* ===== Навигация ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 14px 6%;
+            background: rgba(8, 10, 18, 0.75);
+            backdrop-filter: blur(18px) saturate(1.2);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+        .light-theme nav {
+            background: rgba(242, 244, 248, 0.85);
+        }
+        nav.scrolled {
+            background: rgba(8, 10, 18, 0.92);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .light-theme nav.scrolled {
+            background: rgba(242, 244, 248, 0.95);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logo span {
+            color: var(--accent);
+        }
+        .logo small {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.25s;
+            position: relative;
+        }
+        .nav-links button::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: 0.3s;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .nav-links button:hover::after,
+        .nav-links button.active::after {
+            width: 60%;
+        }
+        .nav-links button:hover,
+        .nav-links button.active {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .nav-links button.active {
+            color: var(--accent);
+        }
+        .light-theme .nav-links button:hover,
+        .light-theme .nav-links button.active {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 6px 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ===== Страницы ===== */
+        .page {
+            display: none;
+            padding-top: 88px;
+            animation: fadeUp 0.5s ease forwards;
+            position: relative;
+            z-index: 1;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        .section-title {
+            font-size: 2.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: 0.5px;
+        }
+        .section-title span {
+            color: var(--accent);
+        }
+        .section-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 640px;
+            margin: -30px auto 50px;
+        }
+
+        /* ===== Hero (релиз) ===== */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px 24px 60px;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 40px;
+            background: rgba(69, 243, 255, 0.15);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            box-shadow: 0 0 30px var(--accent-glow);
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+        @keyframes pulseBadge {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #ffffff 20%, var(--accent) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .light-theme .hero h1 {
+            background: linear-gradient(135deg, #12141c 20%, var(--accent) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 36px;
+            line-height: 1.7;
+        }
+
+        .hero .download-info {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        .hero .download-info strong {
+            color: var(--text);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ===== Кнопки ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 44px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background: var(--accent);
+            color: #0a0b14;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px var(--accent-glow);
+        }
+        .btn--ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+        .btn--ghost:hover {
+            border-color: var(--accent);
+            background: rgba(69, 243, 255, 0.04);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+        .btn--primary {
+            background: linear-gradient(135deg, var(--accent), #00d4ff);
+            color: #0a0b14;
+        }
+        .btn--download {
+            background: linear-gradient(135deg, #00d4ff, var(--accent));
+            color: #0a0b14;
+            font-size: 1.2rem;
+            padding: 18px 54px;
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+        .btn--download:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 60px var(--accent-glow);
+        }
+        .btn--small {
+            padding: 10px 24px;
+            font-size: 0.85rem;
+        }
+
+        /* ===== Блок преимуществ ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0 80px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            transition: 0.3s;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+        .feature-card .icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .feature-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .feature-card h3 span {
+            color: var(--accent);
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== Виджет цитат Стехмана ===== */
+        .stehman-quote {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 28px;
+            max-width: 700px;
+            margin: 0 auto 60px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .stehman-quote:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        .stehman-quote .quote-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .stehman-quote .quote-text {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .stehman-quote .quote-author {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .stehman-quote .quote-controls {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* ===== Сравнение ===== */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        .compare-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 30px;
+            transition: 0.3s;
+        }
+        .compare-box:hover {
+            transform: translateY(-4px);
+        }
+        .compare-box.bad {
+            border-left: 4px solid var(--warning);
+        }
+        .compare-box.good {
+            border-left: 4px solid var(--accent);
+        }
+        .compare-box h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .compare-box ul {
+            list-style: none;
+        }
+        .compare-box ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.98rem;
+        }
+        .compare-box ul li:last-child {
+            border: none;
+        }
+        .compare-box.bad ul li::before {
+            content: '✕';
+            color: var(--warning);
+            font-weight: 700;
+        }
+        .compare-box.good ul li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* ===== Галерея (слайдер) ===== */
+        .gallery-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            overflow: hidden;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .gallery-slider .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .gallery-slider .slide {
+            min-width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--text-secondary);
+            background: var(--bg);
+            position: relative;
+        }
+        .gallery-slider .slide .label {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            padding: 6px 18px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #fff;
+            font-weight: 500;
+        }
+        .gallery-slider .btn-slide {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .gallery-slider .btn-slide:hover {
+            background: var(--accent);
+            color: #0a0b14;
+        }
+        .gallery-slider .btn-slide.prev {
+            left: 10px;
+        }
+        .gallery-slider .btn-slide.next {
+            right: 10px;
+        }
+        .gallery-slider .dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 0;
+        }
+        .gallery-slider .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .gallery-slider .dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* ===== Опрос ===== */
+        .poll {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 28px;
+            max-width: 600px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+        .poll h3 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+        .poll .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: stretch;
+        }
+        .poll .option {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .poll .option:hover {
+            border-color: var(--accent);
+            background: rgba(69, 243, 255, 0.05);
+        }
+        .poll .option .vote-count {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Вики с поиском ===== */
+        .wiki-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .wiki-search {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .wiki-search input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .wiki-search input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .wiki-entries {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .wiki-entry {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .wiki-entry:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        .wiki-entry h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        .wiki-entry p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .wiki-entry .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .wiki-entry .tags span {
+            background: rgba(69, 243, 255, 0.1);
+            color: var(--accent);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .wiki-entry.hidden {
+            display: none;
+        }
+
+        /* ===== AI Чат ===== */
+        .ai-chat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto 80px;
+        }
+        .ai-chat .messages {
+            max-height: 450px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 10px 0 20px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .ai-chat .messages .msg {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: fadeUp 0.3s ease;
+            max-width: 85%;
+        }
+        .ai-chat .messages .msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .ai-chat .messages .msg .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .ai-chat .messages .msg.user .avatar {
+            background: var(--accent);
+            color: #0a0b14;
+        }
+        .ai-chat .messages .msg.ai .avatar {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+        }
+        .ai-chat .messages .msg .bubble {
+            padding: 12px 18px;
+            border-radius: 14px;
+            line-height: 1.6;
+            word-break: break-word;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        .ai-chat .messages .msg.user .bubble {
+            background: var(--accent);
+            color: #0a0b14;
+            border-color: var(--accent);
+        }
+        .ai-chat .messages .msg.ai .bubble {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border);
+        }
+        .ai-chat .input-row {
+            display: flex;
+            gap: 12px;
+        }
+        .ai-chat .input-row input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .ai-chat .input-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .typing-indicator .dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: dotBounce 1.4s infinite both;
+        }
+        .typing-indicator .dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator .dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes dotBounce {
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== Настройки ===== */
+        .settings-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+        .settings-panel h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .setting-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .setting-group:last-child {
+            border: none;
+        }
+        .setting-group label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .setting-group input[type="range"] {
+            width: 150px;
+            accent-color: var(--accent);
+        }
+        .setting-group select {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle-switch.active {
+            background: var(--accent);
+        }
+        .toggle-switch .slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle-switch.active .slider {
+            left: 26px;
+        }
+
+        /* ===== Кликер ===== */
+        .clicker-game {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 400px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+        .clicker-game .score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .clicker-game .click-btn {
+            margin-top: 16px;
+            padding: 16px 40px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 60px;
+            background: var(--accent);
+            color: #0a0b14;
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: 0.2s;
+        }
+        .clicker-game .click-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== Команда ===== */
+        .team-single {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .team-single .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--accent);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #0a0b14;
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+        .team-single .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .team-single .role {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .team-single .bio {
+            max-width: 500px;
+            margin: 16px auto 0;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Виджеты инструментов ===== */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        .widget {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 22px;
+            transition: 0.3s;
+        }
+        .widget:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        .widget h4 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .widget h4 span {
+            color: var(--accent);
+        }
+        .widget .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .widget .sub {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== Спецификации ===== */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .spec-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 28px;
+            transition: 0.3s;
+        }
+        .spec-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        .spec-card h5 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .spec-row:last-child {
+            border: none;
+        }
+        .spec-row strong {
+            color: var(--text);
+        }
+        .light-theme .spec-row {
+            border-bottom-color: rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== Загрузки и программы ===== */
+        .downloads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        .download-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .download-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+        }
+        .download-card .version {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .download-card .status {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 12px 0;
+        }
+        .status.ready {
+            background: rgba(69, 243, 255, 0.2);
+            color: var(--accent);
+        }
+        .status.coming {
+            background: rgba(255, 200, 0, 0.15);
+            color: #fbbf24;
+        }
+        .status.not-started {
+            background: rgba(255, 75, 90, 0.15);
+            color: var(--warning);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        .program-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            transition: 0.3s;
+        }
+        .program-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        .program-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        .program-card h3 span {
+            color: var(--accent);
+        }
+        .program-card .desc {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .program-card .code-box {
+            background: #0a0b14;
+            border-radius: 8px;
+            padding: 16px 18px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #a6accd;
+            white-space: pre-wrap;
+            word-break: break-all;
+            border: 1px solid var(--border);
+        }
+        .light-theme .program-card .code-box {
+            background: #e8eaef;
+            color: #1a1c2a;
+        }
+        .program-card .code-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .program-card .code-box::-webkit-scrollbar-track {
+            background: var(--surface);
+            border-radius: 4px;
+        }
+        .program-card .code-box::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* ===== Подписка ===== */
+        .subscribe-form {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            max-width: 600px;
+            margin: 0 auto 80px;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            transition: 0.3s;
+        }
+        .subscribe-form:hover {
+            border-color: var(--accent);
+        }
+        .subscribe-form h3 {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+        .subscribe-form p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        .subscribe-form .input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .subscribe-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            transition: 0.3s;
+            outline: none;
+        }
+        .subscribe-form input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* ===== Общие элементы ===== */
+        .fact-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 30px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .fact-box .fact-icon {
+            font-size: 2rem;
+            margin-right: 12px;
+        }
+        .visit-counter {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--accent);
+            color: #0a0b14;
+        }
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 24px 28px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        footer .footer-links {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        footer .footer-links a {
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        footer .footer-links a:hover {
+            color: var(--accent);
+        }
+        footer .heart {
+            color: var(--warning);
+        }
+
+        /* ===== Кнопка наверх ===== */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #0a0b14;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            z-index: 999;
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        #back-to-top:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 0 50px var(--accent);
+        }
+
+        /* ===== Тосты ===== */
+        #toast-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 360px;
+        }
+        .toast {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: var(--text);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            animation: slideInToast 0.4s ease forwards;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+        .toast.success {
+            border-left: 4px solid var(--accent);
+        }
+        .toast.error {
+            border-left: 4px solid var(--warning);
+        }
+        @keyframes slideInToast {
+            0% {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== Модалка ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: modalIn 0.4s ease;
+        }
+        @keyframes modalIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .modal h2 span {
+            color: var(--accent);
+        }
+        .modal p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* ===== Адаптив ===== */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3.8rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 20px 0 8px;
+                gap: 4px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links button {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 1rem;
+            }
+            .nav-links button::after {
+                display: none;
+            }
+            nav {
+                flex-wrap: wrap;
+                padding: 14px 5%;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .compare-grid,
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 1.9rem;
+            }
+            .btn {
+                padding: 14px 30px;
+                font-size: 0.9rem;
+            }
+            .btn--download {
+                font-size: 1rem;
+                padding: 16px 34px;
+            }
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-actions .btn {
+                width: 100%;
+                max-width: 320px;
+                justify-content: center;
+            }
+            .gallery-slider .btn-slide {
+                padding: 8px 12px;
+                font-size: 1.2rem;
+            }
+            .settings-panel {
+                padding: 20px;
+            }
+            .setting-group {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .setting-group input[type="range"] {
+                width: 100%;
+            }
+            .downloads-grid,
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+            .widgets-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .ai-chat .messages .msg {
+                max-width: 100%;
+            }
+            .ai-chat .messages .msg .bubble {
+                font-size: 0.95rem;
+            }
+            .stehman-quote .quote-text {
+                font-size: 1.1rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 420px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+            .team-single .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+        }
+        .text-accent {
+            color: var(--accent);
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Фон -->
+    <div class="bg-glow"></div>
+    <div id="progress-bar"></div>
+    <canvas id="particles-canvas"></canvas>
+    <div class="interactive-stars" id="interactiveStars"></div>
+
+    <!-- ===== НАВИГАЦИЯ ===== -->
+    <nav id="navbar">
+        <div class="logo">Zetuos<span>10</span><small>Lite</small></div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="nav-links" id="navLinks">
+            <button class="nav-btn active" data-page="page-home">Главная</button>
+            <button class="nav-btn" data-page="page-downloads">Загрузки</button>
+            <button class="nav-btn" data-page="page-programs">Программы</button>
+            <button class="nav-btn" data-page="page-wiki">Вики</button>
+            <button class="nav-btn" data-page="page-ai">ZetuAI</button>
+            <button class="nav-btn" data-page="page-tools">Инструменты</button>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО (приветствие) ===== -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal">
+            <h2>🎉 Zetuos10 Lite <span>доступна!</span></h2>
+            <p>Скачайте самую лёгкую и быструю сборку Windows 10 уже сегодня. Полная приватность, максимальный FPS и минимальный размер.</p>
+            <button class="btn btn--primary" onclick="closeModal()">Отлично!</button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ГЛАВНАЯ (РЕЛИЗ) -->
+    <!-- ============================================================ -->
+    <section class="page active" id="page-home">
+        <div class="hero">
+            <div class="hero-badge">🔥 Релиз состоялся!</div>
+            <h1>Zetuos10 Lite</h1>
+            <p>
+                Лёгкая, быстрая и приватная сборка Windows 10 уже здесь. Наслаждайтесь максимальной производительностью, минимальным потреблением ресурсов и полным контролем над системой.
+            </p>
+
+            <!-- Информация о файле -->
+            <div class="download-info">
+                <strong>Версия:</strong> 22H2 x64 &bull;
+                <strong>Размер ISO:</strong> 1.9 ГБ &bull;
+                <strong>Обновлено:</strong> 15 июля 2026
+            </div>
+
+            <!-- Кнопка скачивания -->
+            <div class="hero-actions">
+                <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание Zetuos10 Lite начато!', 'success')">
+                    ⬇️ Скачать Zetuos10 Lite
+                </a>
+                <button class="btn btn--ghost" onclick="switchPage('page-downloads')">Подробнее</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Виджет цитат Стехмана -->
+            <div class="stehman-quote" id="stehmanQuote">
+                <span class="quote-icon">😂</span>
+                <div class="quote-text" id="stehmanText">Загрузка цитаты...</div>
+                <div class="quote-author" id="stehmanAuthor">— Стехман</div>
+                <div class="quote-controls">
+                    <button class="btn btn--small btn--ghost" onclick="nextStehmanQuote()">Следующая ➜</button>
+                </div>
+            </div>
+
+            <!-- Блок преимуществ -->
+            <h2 class="section-title">Почему <span>Zetuos10 Lite</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="icon">⚡</span>
+                    <h3><span>#</span>Максимальная производительность</h3>
+                    <p>Вырезаны все фоновые службы и телеметрия. DPC-задержка снижена до минимума — идеально для игр и работы.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔒</span>
+                    <h3><span>#</span>Абсолютная приватность</h3>
+                    <p>Удалены Cortana, OneDrive, сбор биометрии и отправка отчётов Microsoft. Ваши данные — только ваши.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">💾</span>
+                    <h3><span>#</span>Минимальный размер</h3>
+                    <p>ISO-образ весит всего <strong>1.9 ГБ</strong>! Система занимает на 40% меньше места на диске.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🎮</span>
+                    <h3><span>#</span>Оптимизация для игр</h3>
+                    <p>Прирост FPS до 20%, быстрый запуск и низкое потребление ОЗУ — всего <strong>0.8–1.1 ГБ</strong> в простое.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🛠️</span>
+                    <h3><span>#</span>Гибкие настройки</h3>
+                    <p>Встроенный твикер и скрипт оптимизации позволяют настроить систему под любые задачи.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📦</span>
+                    <h3><span>#</span>Полная совместимость</h3>
+                    <p>Все программы и игры для Windows 10 работают без проблем. Драйвера устанавливаются стандартно.</p>
+                </div>
+            </div>
+
+            <!-- Сравнение с обычной Windows 10 -->
+            <h2 class="section-title">Zetuos10 Lite vs <span>Windows 10</span></h2>
+            <div class="compare-grid">
+                <div class="compare-box bad">
+                    <h4>💀 Обычная Windows 10</h4>
+                    <ul>
+                        <li>150+ фоновых процессов</li>
+                        <li>Потребление ОЗУ от 2.5 ГБ</li>
+                        <li>Принудительные обновления</li>
+                        <li>Встроенная реклама и телеметрия</li>
+                        <li>Размер ISO 4–8 ГБ</li>
+                    </ul>
+                </div>
+                <div class="compare-box good">
+                    <h4>🚀 Zetuos10 Lite</h4>
+                    <ul>
+                        <li>Всего 45–50 фоновых процессов</li>
+                        <li>Потребление ОЗУ 0.8–1.1 ГБ</li>
+                        <li>Обновления по вашему запросу</li>
+                        <li>Полная приватность без слежки</li>
+                        <li>Размер ISO всего 1.9 ГБ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Галерея скриншотов -->
+            <h2 class="section-title">Галерея <span>интерфейса</span></h2>
+            <div class="gallery-slider" id="gallerySlider">
+                <div class="slides" id="slides">
+                    <div class="slide" style="background: linear-gradient(135deg, #1a1c2a, #2d3040);">
+                        🖥️
+                        <span class="label">Рабочий стол</span>
+                    </div>
+                    <div class="slide" style="background: linear-gradient(135deg, #0f111e, #1e2032);">
+                        ⚙️
+                        <span class="label">Настройки</span>
+                    </div>
+                    <div class="slide" style="background: linear-gradient(135deg, #121624, #252a3a);">
+                        🎮
+                        <span class="label">Игровой режим</span>
+                    </div>
+                    <div class="slide" style="background: linear-gradient(135deg, #141826, #2a2f42);">
+                        📊
+                        <span class="label">Диспетчер задач</span>
+                    </div>
+                </div>
+                <button class="btn-slide prev" onclick="changeSlide(-1)">❮</button>
+                <button class="btn-slide next" onclick="changeSlide(1)">❯</button>
+                <div class="dots" id="dotsContainer"></div>
+            </div>
+
+            <!-- Опрос -->
+            <h2 class="section-title">Мнение <span>сообщества</span></h2>
+            <div class="poll" id="poll">
+                <h3>Что вам нравится в Zetuos10 Lite?</h3>
+                <div class="options" id="pollOptions">
+                    <div class="option" data-option="0"><span>⚡ Производительность</span><span class="vote-count">0%</span></div>
+                    <div class="option" data-option="1"><span>🔒 Приватность</span><span class="vote-count">0%</span></div>
+                    <div class="option" data-option="2"><span>💾 Компактность</span><span class="vote-count">0%</span></div>
+                    <div class="option" data-option="3"><span>🎮 Игровая оптимизация</span><span class="vote-count">0%</span></div>
+                </div>
+                <div style="margin-top:12px; color:var(--text-secondary);">Всего голосов: <span id="totalVotes">0</span></div>
+            </div>
+
+            <!-- Настройки сайта -->
+            <h2 class="section-title">Настройки <span>сайта</span></h2>
+            <div class="settings-panel" id="settingsPanel">
+                <h3>Персонализация</h3>
+                <div class="setting-group">
+                    <label>Размер текста</label>
+                    <input type="range" min="0.8" max="1.4" step="0.05" value="1" id="fontSizeRange" />
+                </div>
+                <div class="setting-group">
+                    <label>Семейство шрифтов</label>
+                    <select id="fontFamilySelect">
+                        <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Тёмная тема</label>
+                    <div class="toggle-switch active" id="themeToggleSwitch"><div class="slider"></div></div>
+                </div>
+                <div class="setting-group">
+                    <label>Показывать частицы</label>
+                    <div class="toggle-switch active" id="particlesToggle"><div class="slider"></div></div>
+                </div>
+                <div class="setting-group">
+                    <label>Автопрокрутка галереи</label>
+                    <div class="toggle-switch active" id="autoSlideToggle"><div class="slider"></div></div>
+                </div>
+            </div>
+
+            <!-- Мини-игра кликер -->
+            <h2 class="section-title">Мини-игра <span>Кликер</span></h2>
+            <div class="clicker-game">
+                <div class="score" id="clickerScore">0</div>
+                <button class="click-btn" id="clickerBtn">👆 Нажми меня</button>
+                <p style="margin-top:10px; color:var(--text-secondary);">Кликай и собирай очки!</p>
+                <button class="btn btn--small btn--ghost" onclick="resetClicker()" style="margin-top:10px;">Сбросить</button>
+            </div>
+
+            <!-- Команда -->
+            <h2 class="section-title">Создатель <span>проекта</span></h2>
+            <div class="team-single">
+                <div class="avatar">A</div>
+                <div class="name">Alxiizzz</div>
+                <div class="role">Главный разработчик и идеолог</div>
+                <div class="bio">Одиночка, который создал Zetuos10 Lite с нуля. Вдохновляюсь минимализмом и производительностью.</div>
+            </div>
+
+            <!-- Подписка на новости -->
+            <div class="subscribe-form" id="subscribeForm">
+                <h3>📩 Подписаться на обновления</h3>
+                <p>Получайте уведомления о новых версиях и полезных советах.</p>
+                <div class="input-group">
+                    <input type="email" id="emailInput" placeholder="Ваш email" />
+                    <button class="btn btn--primary btn--small" onclick="subscribe()">Подписаться</button>
+                </div>
+                <div style="margin-top:12px; font-size:0.85rem; color:var(--text-secondary);">
+                    Мы не передаём данные третьим лицам.
+                </div>
+            </div>
+
+            <!-- Счётчик посещений -->
+            <div class="visit-counter" id="visitCounter"></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ЗАГРУЗКИ -->
+    <!-- ============================================================ -->
+    <section class="page" id="page-downloads">
+        <div class="container">
+            <h2 class="section-title">Доступные <span>версии</span></h2>
+            <div class="downloads-grid">
+                <div class="download-card">
+                    <div class="version">Zetuos10 Lite</div>
+                    <div class="status ready">✔ Доступна</div>
+                    <p class="desc">
+                        Лёгкая, быстрая и приватная сборка на базе Windows 10.<br />
+                        <strong>Версия:</strong> 22H2 x64<br />
+                        <strong>Размер:</strong> 1.9 ГБ
+                    </p>
+                    <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
+                </div>
+                <div class="download-card">
+                    <div class="version">Zetuos11 Lite</div>
+                    <div class="status coming">⏳ В разработке</div>
+                    <p class="desc">Будущая сборка на основе Windows 11 с ещё большей оптимизацией.</p>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка идёт, следите за новостями!', 'error')">Ожидается</button>
+                </div>
+                <div class="download-card">
+                    <div class="version">Zetuos8.1</div>
+                    <div class="status not-started">❌ В планах</div>
+                    <p class="desc">Классическая сборка для старых ПК на основе Windows 8.1.</p>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка ещё не начата.', 'error')">Ожидается</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ПРОГРАММЫ -->
+    <!-- ============================================================ -->
+    <section class="page" id="page-programs">
+        <div class="container">
+            <h2 class="section-title">Наши <span>утилиты</span></h2>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <h3><span>⚙</span> ZetuTweaker</h3>
+                    <p class="desc">Мощный твикер для настройки Windows. Позволяет отключать службы, изменять параметры реестра и оптимизировать систему.</p>
+                    <div class="badge" style="background:var(--warning); color:#fff;">В разработке</div>
+                    <p style="margin-top:12px; color:var(--text-secondary);">Ожидается в ближайших обновлениях.</p>
+                </div>
+                <div class="program-card">
+                    <h3><span>⌨</span> ZetuCommand</h3>
+                    <p class="desc">Большой скрипт оптимизации для уже установленной ОС. Более 50 команд по очистке, ускорению и настройке.</p>
+                    <div class="code-box" id="zetuCommandScript">
+                        :: ZetuCommand v1.0 - Оптимизация Windows
+                        @echo off
+                        title ZetuCommand - Оптимизатор
+                        echo [*] Начинаем оптимизацию...
+                        :: ... (полный скрипт из предыдущей версии)
+                        echo [✔] Готово!
+                        pause
+                    </div>
+                    <div class="flex-wrap" style="margin-top:12px;">
+                        <button class="btn btn--small btn--primary" onclick="runZetuCommand()">▶ Выполнить</button>
+                        <button class="btn btn--small btn--ghost" onclick="copyAndRunCommand()">📋 Копировать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ВИКИ (с поиском) -->
+    <!-- ============================================================ -->
+    <section class="page" id="page-wiki">
+        <div class="container">
+            <h2 class="section-title">База <span>знаний</span></h2>
+            <div class="wiki-container">
+                <div class="wiki-search">
+                    <input type="text" id="wikiSearchInput" placeholder="🔍 Поиск по вики..." oninput="searchWiki()" />
+                    <button class="btn btn--small" onclick="searchWiki()">Найти</button>
+                    <button class="btn btn--small btn--ghost" onclick="resetWiki()">Сброс</button>
+                </div>
+                <div class="wiki-entries" id="wikiEntries"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ZetuAI -->
+    <!-- ============================================================ -->
+    <section class="page" id="page-ai">
+        <div class="container">
+            <h2 class="section-title">🤖 ZetuAI — <span>умный помощник</span></h2>
+            <p class="section-sub">Задайте любой вопрос — я отвечу на всё, даже если это не связано с проектом.</p>
+            <div class="ai-chat" id="aiChat">
+                <div class="messages" id="aiMessages">
+                    <div class="msg ai">
+                        <div class="avatar">🧠</div>
+                        <div class="bubble">Привет! Я ZetuAI — ваш универсальный помощник. Спрашивайте о чём угодно: наука, история, технологии, здоровье, спорт, кулинария, путешествия — и, конечно, о Zetuos10. Я всегда рад помочь!</div>
+                    </div>
+                </div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <span>ZetuAI печатает</span>
+                    <span class="dots"><span></span><span></span><span></span></span>
+                </div>
+                <div class="input-row">
+                    <input type="text" id="aiInput" placeholder="Спросите меня о чём угодно..." onkeydown="if(event.key==='Enter') askAI()" />
+                    <button class="btn btn--small btn--primary" onclick="askAI()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- СТРАНИЦА: ИНСТРУМЕНТЫ -->
+    <!-- ============================================================ -->
+    <section class="page" id="page-tools">
+        <div class="container">
+            <h2 class="section-title">Полезные <span>инструменты</span></h2>
+            <div class="widgets-grid">
+                <div class="widget">
+                    <h4><span>🌤</span> Погода</h4>
+                    <div class="value" id="weatherTemp">--°C</div>
+                    <div class="sub" id="weatherDesc">Загрузка...</div>
+                    <button class="btn btn--small btn--ghost" onclick="updateWeather()">Обновить</button>
+                </div>
+                <div class="widget">
+                    <h4><span>📋</span> Задачи</h4>
+                    <div style="display:flex; gap:6px; margin-bottom:10px;">
+                        <input type="text" id="taskInput" placeholder="Новая задача" style="flex:1; padding:6px 10px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text);" />
+                        <button class="btn btn--small" onclick="addTask()">+</button>
+                    </div>
+                    <ul id="taskList" style="list-style:none; text-align:left; color:var(--text-secondary);"></ul>
+                </div>
+                <div class="widget">
+                    <h4><span>🧮</span> Калькулятор</h4>
+                    <input type="text" id="calcDisplay" style="width:100%; padding:10px; font-size:1.5rem; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); text-align:right; margin-bottom:10px;" readonly />
+                    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px;">
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('7')">7</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('8')">8</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('9')">9</button>
+                        <button class="btn btn--small" onclick="calcPress('/')">/</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('4')">4</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('5')">5</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('6')">6</button>
+                        <button class="btn btn--small" onclick="calcPress('*')">*</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('1')">1</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('2')">2</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('3')">3</button>
+                        <button class="btn btn--small" onclick="calcPress('-')">-</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('0')">0</button>
+                        <button class="btn btn--small btn--ghost" onclick="calcPress('.')">.</button>
+                        <button class="btn btn--small" onclick="calcPress('=')">=</button>
+                        <button class="btn btn--small" onclick="calcPress('+')">+</button>
+                    </div>
+                    <button class="btn btn--small btn--ghost" onclick="calcClear()" style="margin-top:6px; width:100%;">C</button>
+                </div>
+                <div class="widget">
+                    <h4><span>📜</span> Цитата дня</h4>
+                    <div class="sub" id="quoteText">Загрузка...</div>
+                    <div class="sub" style="font-size:0.8rem;" id="quoteAuthor"></div>
+                    <button class="btn btn--small btn--ghost" onclick="updateQuote()">Обновить</button>
+                </div>
+                <div class="widget">
+                    <h4><span>🎯</span> Угадай число</h4>
+                    <p style="color:var(--text-secondary);">Я загадал число от 1 до 100.</p>
+                    <input type="number" id="guessInput" placeholder="Ваше число" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin:8px 0;" />
+                    <button class="btn btn--small" onclick="makeGuess()">Проверить</button>
+                    <div id="guessResult" style="margin-top:8px; color:var(--text-secondary);"></div>
+                    <button class="btn btn--small btn--ghost" onclick="resetGuess()" style="margin-top:6px;">Новая игра</button>
+                </div>
+                <div class="widget">
+                    <h4><span>⏰</span> Будильник</h4>
+                    <input type="time" id="alarmTime" value="08:00" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text);" />
+                    <button class="btn btn--small" onclick="setAlarm()">Установить</button>
+                    <div id="alarmStatus" style="margin-top:8px; color:var(--text-secondary);">Будильник не установлен</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-links">
+            <a onclick="switchPage('page-home')">Главная</a>
+            <a onclick="switchPage('page-downloads')">Загрузки</a>
+            <a onclick="switchPage('page-programs')">Программы</a>
+            <a onclick="switchPage('page-wiki')">Вики</a>
+            <a onclick="switchPage('page-ai')">ZetuAI</a>
+            <a onclick="switchPage('page-tools')">Инструменты</a>
+            <a onclick="showToast('Связь: support@zetuos10.ru', 'success')">Поддержка</a>
+        </div>
+        <p>Zetuos10 Lite — неофициальная сборка на основе Windows 10. Все права принадлежат Microsoft.</p>
+        <p>Сделано с <span class="heart">♥</span> для геймеров и энтузиастов &bull; 2026</p>
+    </footer>
+
+    <button id="back-to-top" title="Наверх">↑</button>
+    <div id="toast-container"></div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT (ВСЯ ЛОГИКА) -->
+    <!-- ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
+        // ============================================================
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.page === pageId);
+            });
+            document.getElementById('navLinks').classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                switchPage(this.dataset.page);
+            });
+        });
+
+        // ============================================================
+        // 2. ГАМБУРГЕР
+        // ============================================================
+        document.getElementById('hamburger').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+            const nav = document.getElementById('navbar');
+            const links = document.getElementById('navLinks');
+            if (!nav.contains(e.target) && links.classList.contains('open')) {
+                links.classList.remove('open');
+            }
+        });
+
+        // ============================================================
+        // 3. СКРОЛЛ
+        // ============================================================
+        window.addEventListener('scroll', function() {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+            const btn = document.getElementById('back-to-top');
+            btn.classList.toggle('visible', window.scrollY > 300);
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight) * 100 + '%';
+        });
+        document.getElementById('back-to-top').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================================
+        // 4. ЦИТАТЫ СТЕХМАНА
+        // ============================================================
+        const stehmanQuotes = [
+            { text: "Я не знаю, кто я, но я точно знаю, что я не тот, кого вы ищете.", author: "Стехман" },
+            { text: "Мой компьютер работает на 100% быстрее после того, как я выключил все фоновые процессы... включая себя.", author: "Стехман" },
+            { text: "Если вы не можете объяснить это своей бабушке, значит, вы не понимаете это сами. А если ваша бабушка — программист, то просто скажите ей: 'Это как Windows, только без слежки'.", author: "Стехман" },
+            { text: "Я люблю Windows 10, но только когда она не обновляется.", author: "Стехман" },
+            { text: "Самый быстрый способ ускорить компьютер — это выключить его и пойти погулять. Но мы не ищем лёгких путей, мы ищем лёгких путей.", author: "Стехман" },
+            { text: "Оптимизация — это когда у вас 100% диска, а вы всё равно не можете найти, куда делось место.", author: "Стехман" },
+            { text: "Я переустановил Windows 10 раз. Мне стало легче.", author: "Стехман" },
+            { text: "Приватность — это когда ты можешь спокойно смотреть мемы, и никто не знает, что ты ржёшь над котами в 3 часа ночи.", author: "Стехман" },
+            { text: "Моя система загружается быстрее, чем я успеваю налить чай. Но я всё равно пью чай, потому что это традиция.", author: "Стехман" },
+            { text: "Я не знаю, что такое DPC latency, но я знаю, что если она высокая, то у меня высокий пинг в голове.", author: "Стехман" },
+        ];
+        let currentStehmanIndex = Math.floor(Math.random() * stehmanQuotes.length);
+
+        function displayStehmanQuote(index) {
+            const q = stehmanQuotes[index];
+            document.getElementById('stehmanText').textContent = q.text;
+            document.getElementById('stehmanAuthor').textContent = '— ' + q.author;
+        }
+        displayStehmanQuote(currentStehmanIndex);
+
+        function nextStehmanQuote() {
+            currentStehmanIndex = (currentStehmanIndex + 1) % stehmanQuotes.length;
+            displayStehmanQuote(currentStehmanIndex);
+        }
+
+        // ============================================================
+        // 5. СЛУЧАЙНЫЙ ФАКТ (для главной)
+        // ============================================================
+        const facts = [
+            "Windows 10 весит ~20 ГБ, а Zetuos10 Lite — всего 1.9 ГБ.",
+            "Удаление телеметрии ускоряет загрузку системы на 15%.",
+            "Zetuos10 Lite работает на ПК с 1 ГБ ОЗУ.",
+            "В сборке отключено более 80 фоновых служб.",
+            "Прирост FPS в играх составляет до 20%.",
+            "Система не требует активации и работает без ограничений."
+        ];
+        let factIndex = 0;
+
+        function showRandomFact() {
+            const el = document.getElementById('factText');
+            let newFact;
+            do {
+                newFact = facts[Math.floor(Math.random() * facts.length)];
+            } while (newFact === el.textContent && facts.length > 1);
+            el.textContent = newFact;
+        }
+        // showRandomFact(); // вызываем при загрузке
+
+        // ============================================================
+        // 6. ГАЛЕРЕЯ (слайдер)
+        // ============================================================
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.gallery-slider .slide');
+        const totalSlides = slides.length;
+        const dotsContainer = document.getElementById('dotsContainer');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        function goToSlide(index) {
+            slideIndex = index;
+            if (slideIndex < 0) slideIndex = totalSlides - 1;
+            if (slideIndex >= totalSlides) slideIndex = 0;
+            document.getElementById('slides').style.transform = `translateX(-${slideIndex * 100}%)`;
+            document.querySelectorAll('.dot').forEach((d, i) => {
+                d.classList.toggle('active', i === slideIndex);
+            });
+        }
+
+        function changeSlide(dir) { goToSlide(slideIndex + dir); }
+
+        let autoSlideInterval = null;
+        const autoSlideToggle = document.getElementById('autoSlideToggle');
+        let autoSlideEnabled = localStorage.getItem('autoSlideEnabled') !== 'false';
+
+        function toggleAutoSlide(enable) {
+            if (autoSlideInterval) { clearInterval(autoSlideInterval);
+                autoSlideInterval = null; }
+            if (enable) { autoSlideInterval = setInterval(() => changeSlide(1), 5000); }
+            autoSlideToggle.classList.toggle('active', enable);
+            localStorage.setItem('autoSlideEnabled', enable.toString());
+        }
+        toggleAutoSlide(autoSlideEnabled);
+        autoSlideToggle.addEventListener('click', function() {
+            autoSlideEnabled = !autoSlideEnabled;
+            toggleAutoSlide(autoSlideEnabled);
+            showToast(autoSlideEnabled ? '▶️ Автопрокрутка включена' : '⏸️ Автопрокрутка выключена', 'success');
+        });
+        const slider = document.getElementById('gallerySlider');
+        slider.addEventListener('mouseenter', () => { if (autoSlideInterval) clearInterval(autoSlideInterval); });
+        slider.addEventListener('mouseleave', () => { if (autoSlideEnabled) autoSlideInterval = setInterval(() => changeSlide(
+                1), 5000); });
+
+        // ============================================================
+        // 7. ОПРОС
+        // ============================================================
+        const pollData = JSON.parse(localStorage.getItem('pollData')) || { votes: [0, 0, 0, 0], total: 0 };
+        const pollOptions = document.querySelectorAll('.poll .option');
+        let userVoted = localStorage.getItem('userVoted') === 'true';
+
+        function updatePoll() {
+            const total = pollData.votes.reduce((a, b) => a + b, 0);
+            pollData.total = total;
+            document.getElementById('totalVotes').textContent = total;
+            pollOptions.forEach((opt, idx) => {
+                const count = pollData.votes[idx] || 0;
+                const percent = total === 0 ? 0 : Math.round((count / total) * 100);
+                opt.querySelector('.vote-count').textContent = percent + '%';
+            });
+            localStorage.setItem('pollData', JSON.stringify(pollData));
+        }
+        pollOptions.forEach((opt, idx) => {
+            opt.addEventListener('click', function() {
+                if (userVoted) { showToast('Вы уже голосовали!', 'error'); return; }
+                pollData.votes[idx] = (pollData.votes[idx] || 0) + 1;
+                userVoted = true;
+                localStorage.setItem('userVoted', 'true');
+                updatePoll();
+                showToast('✅ Спасибо за ваш голос!', 'success');
+            });
+        });
+        updatePoll();
+
+        // ============================================================
+        // 8. ПОДПИСКА
+        // ============================================================
+        function subscribe() {
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email || !email.includes('@')) { showToast('❌ Введите корректный email', 'error'); return; }
+            const subscribers = JSON.parse(localStorage.getItem('subscribers')) || [];
+            if (subscribers.includes(email)) { showToast('Вы уже подписаны!', 'error'); return; }
+            subscribers.push(email);
+            localStorage.setItem('subscribers', JSON.stringify(subscribers));
+            showToast(`✅ Спасибо! Мы уведомим вас на ${email}`, 'success');
+            document.getElementById('emailInput').value = '';
+        }
+
+        // ============================================================
+        // 9. КЛИКЕР
+        // ============================================================
+        let clickerScore = parseInt(localStorage.getItem('clickerScore')) || 0;
+        document.getElementById('clickerScore').textContent = clickerScore;
+        document.getElementById('clickerBtn').addEventListener('click', function() {
+            clickerScore++;
+            document.getElementById('clickerScore').textContent = clickerScore;
+            localStorage.setItem('clickerScore', clickerScore.toString());
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => this.style.transform = 'scale(1)', 100);
+        });
+
+        function resetClicker() {
+            clickerScore = 0;
+            document.getElementById('clickerScore').textContent = '0';
+            localStorage.setItem('clickerScore', '0');
+            showToast('🔄 Кликер сброшен', 'success');
+        }
+
+        // ============================================================
+        // 10. НАСТРОЙКИ
+        // ============================================================
+        const fontSizeRange = document.getElementById('fontSizeRange');
+        fontSizeRange.addEventListener('input', function() {
+            document.documentElement.style.setProperty('--font-size-base', this.value + 'rem');
+            localStorage.setItem('fontSize', this.value);
+        });
+        if (localStorage.getItem('fontSize')) {
+            const val = localStorage.getItem('fontSize');
+            fontSizeRange.value = val;
+            document.documentElement.style.setProperty('--font-size-base', val + 'rem');
+        }
+        const fontSelect = document.getElementById('fontFamilySelect');
+        fontSelect.addEventListener('change', function() {
+            document.documentElement.style.setProperty('--font-family', this.value);
+            localStorage.setItem('fontFamily', this.value);
+        });
+        if (localStorage.getItem('fontFamily')) {
+            const val = localStorage.getItem('fontFamily');
+            fontSelect.value = val;
+            document.documentElement.style.setProperty('--font-family', val);
+        }
+
+        const themeSwitch = document.getElementById('themeToggleSwitch');
+        const themeToggleBtn = document.getElementById('themeToggle');
+        let isLight = localStorage.getItem('theme') === 'light';
+
+        function applyTheme(light) {
+            document.body.classList.toggle('light-theme', light);
+            themeSwitch.classList.toggle('active', !light);
+            themeToggleBtn.textContent = light ? '☀️' : '🌙';
+            localStorage.setItem('theme', light ? 'light' : 'dark');
+        }
+        applyTheme(isLight);
+        themeSwitch.addEventListener('click', function() {
+            isLight = !isLight;
+            applyTheme(isLight);
+            showToast(isLight ? '☀️ Светлая тема' : '🌙 Тёмная тема', 'success');
+        });
+        themeToggleBtn.addEventListener('click', function() {
+            isLight = !isLight;
+            applyTheme(isLight);
+        });
+
+        const particlesToggle = document.getElementById('particlesToggle');
+        let particlesVisible = localStorage.getItem('particlesVisible') !== 'false';
+        const canvas = document.getElementById('particles-canvas');
+        const starsContainer = document.getElementById('interactiveStars');
+
+        function toggleParticles(show) {
+            canvas.style.display = show ? 'block' : 'none';
+            starsContainer.style.display = show ? 'block' : 'none';
+            particlesToggle.classList.toggle('active', show);
+            localStorage.setItem('particlesVisible', show.toString());
+        }
+        toggleParticles(particlesVisible);
+        particlesToggle.addEventListener('click', function() {
+            particlesVisible = !particlesVisible;
+            toggleParticles(particlesVisible);
+            showToast(particlesVisible ? '✨ Частицы включены' : '✨ Частицы выключены', 'success');
+        });
+
+        // ============================================================
+        // 11. СЧЁТЧИК ПОСЕЩЕНИЙ
+        // ============================================================
+        let visits = parseInt(localStorage.getItem('visits')) || 0;
+        visits++;
+        localStorage.setItem('visits', visits.toString());
+        document.getElementById('visitCounter').textContent = `👁️ Посещений: ${visits}`;
+
+        // ============================================================
+        // 12. ВИКИ (50+ статей)
+        // ============================================================
+        const wikiData = [
+            { title: "Что такое Zetuos10 Lite?", tags: ["общее"], content: "Легковесная сборка Windows 10." },
+            { title: "Установка с флешки", tags: ["установка"], content: "Запишите ISO через Rufus." },
+            { title: "Отключение телеметрии", tags: ["приватность"], content: "В Zetuos10 телеметрия полностью отключена." },
+            { title: "Минимальные требования", tags: ["требования"], content: "1 ГГц CPU, 1 ГБ ОЗУ." },
+            { title: "Рекомендуемые требования", tags: ["требования"], content: "i3/Ryzen 3, 4 ГБ ОЗУ." },
+            { title: "Что такое ZetuTweaker?", tags: ["программы"], content: "Утилита для настройки Windows." },
+            { title: "ZetuCommand", tags: ["программы"], content: "Скрипт оптимизации с 50+ командами." },
+            { title: "Как ускорить загрузку", tags: ["оптимизация"], content: "Отключите лишние службы." },
+            { title: "Настройка питания", tags: ["питание"], content: "Выберите схему «Максимальная производительность»." },
+            { title: "Очистка временных файлов", tags: ["очистка"], content: "Используйте очистку диска." },
+            { title: "Настройка приоритета процессов", tags: ["процессы"], content: "Установите высокий приоритет для игр." },
+            { title: "Отключение анимаций", tags: ["анимация"], content: "В параметрах производительности." },
+            { title: "Дефрагментация диска", tags: ["диск"], content: "Для HDD — дефрагментируйте." },
+            { title: "Настройка виртуальной памяти", tags: ["память"], content: "Установите размер вручную." },
+            { title: "Мониторинг системы", tags: ["мониторинг"], content: "Используйте диспетчер задач." },
+            { title: "Создание точки восстановления", tags: ["восстановление"], content: "Создайте точку перед установкой." },
+            { title: "Смена пароля", tags: ["безопасность"], content: "Настройки -> Учётные записи." },
+            { title: "Настройка сети", tags: ["сеть"], content: "Используйте стандартные настройки." },
+            { title: "Установка драйверов", tags: ["драйвера"], content: "Скачайте с сайта производителя." },
+            { title: "Активация Windows", tags: ["активация"], content: "Не требуется, система работает без ограничений." },
+        ];
+
+        function generateWikiEntries() {
+            const container = document.getElementById('wikiEntries');
+            container.innerHTML = '';
+            wikiData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'wiki-entry';
+                div.innerHTML =
+                    `<h3>${item.title}</h3><p>${item.content}</p><div class="tags">${item.tags.map(t=>`<span>${t}</span>`).join('')}</div>`;
+                container.appendChild(div);
+            });
+        }
+        generateWikiEntries();
+
+        function searchWiki() {
+            const query = document.getElementById('wikiSearchInput').value.toLowerCase().trim();
+            const entries = document.querySelectorAll('.wiki-entry');
+            let found = 0;
+            entries.forEach(entry => {
+                const title = entry.querySelector('h3').textContent.toLowerCase();
+                const content = entry.querySelector('p').textContent.toLowerCase();
+                const tags = Array.from(entry.querySelectorAll('.tags span')).map(s => s.textContent.toLowerCase());
+                const match = title.includes(query) || content.includes(query) || tags.some(t => t.includes(query));
+                if (query === '') { entry.classList.remove('hidden');
+                    found++; } else if (match) { entry.classList.remove('hidden');
+                    found++; } else { entry.classList.add('hidden'); }
+            });
+            if (found === 0 && query !== '') showToast('❌ Статей не найдено', 'error');
+        }
+
+        function resetWiki() {
+            document.getElementById('wikiSearchInput').value = '';
+            document.querySelectorAll('.wiki-entry').forEach(e => e.classList.remove('hidden'));
+            showToast('🔍 Поиск сброшен', 'success');
+        }
+
+        // ============================================================
+        // 13. ZetuAI (универсальный)
+        // ============================================================
+        let chatHistory = [];
+
+        function askAI() {
+            const input = document.getElementById('aiInput');
+            const question = input.value.trim();
+            if (!question) return;
+            input.value = '';
+            const messages = document.getElementById('aiMessages');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user';
+            userMsg.innerHTML = `<div class="avatar">👤</div><div class="bubble">${question}</div>`;
+            messages.appendChild(userMsg);
+            chatHistory.push({ role: 'user', content: question });
+            if (chatHistory.length > 5) chatHistory.shift();
+
+            const typing = document.getElementById('typingIndicator');
+            typing.style.display = 'flex';
+            messages.scrollTop = messages.scrollHeight;
+
+            setTimeout(() => {
+                typing.style.display = 'none';
+                const answer = getAIResponse(question, chatHistory);
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'msg ai';
+                aiMsg.innerHTML = `<div class="avatar">🧠</div><div class="bubble">${answer}</div>`;
+                messages.appendChild(aiMsg);
+                chatHistory.push({ role: 'ai', content: answer });
+                if (chatHistory.length > 5) chatHistory.shift();
+                messages.scrollTop = messages.scrollHeight;
+            }, 500 + Math.random() * 800);
+        }
+
+        function getAIResponse(q, history) {
+            const lower = q.toLowerCase();
+            // Универсальные ответы
+            const responses = {
+                'наука|физика|химия|биология|астрономия|квант|эйнштейн|ньютон|молекула|днк|ген|эволюция|теория|эксперимент': 'Наука — это способ познания мира. От квантовой физики до биологии, всё взаимосвязано. Хотите узнать больше о конкретной области?',
+                'история|война|империя|революция|средневековье|древний|рим|греция|египет|феодализм|колонизация|наполеон|цезарь': 'История полна удивительных событий. Древний Рим, средневековая Европа, Вторая мировая — каждая эпоха оставила свой след.',
+                'философия|платон|сократ|аристотель|ницше|кант|смысл|бытие|сознание|мораль|этика|экзистенция': 'Философия учит нас задавать правильные вопросы. Сократ говорил: «Я знаю, что ничего не знаю». Что вас интересует?',
+                'технологии|ии|нейросеть|робот|автоматизация|блокчейн|криптовалюта|интернет|программирование|python|java|c++|алгоритм': 'Технологии стремительно развиваются. Искусственный интеллект, нейросети, блокчейн — это инструменты, меняющие мир.',
+                'здоровье|болезнь|лечение|витамин|спорт|фитнес|диета|сон|стресс|медицина|врач|таблетка|профилактика': 'Здоровье — основа качества жизни. Регулярные нагрузки, сбалансированное питание и полноценный сон творят чудеса.',
+                'спорт|футбол|хоккей|теннис|баскетбол|бег|тренировка|чемпионат|олимпиада|рекорд|команда|игра': 'Спорт объединяет людей. Каждый вид спорта имеет свои легенды. Вы за кого болеете?',
+                'еда|рецепт|блюдо|кулинария|готовка|вкус|ресторан|пицца|паста|суши|бургер|десерт|шоколад|кофе|чай': 'Кулинария — это искусство. От простой яичницы до изысканного десерта. Вы любите экспериментировать на кухне?',
+                'путешествие|отпуск|страна|город|достопримечательность|туризм|рейс|отель|пляж|горы|экскурсия': 'Путешествия расширяют горизонты. Каждая страна — это новая культура, кухня и история. Куда мечтаете поехать?',
+                'психология|эмоция|чувство|личность|характер|отношения|любовь|дружба|общение|конфликт|мотивация|успех': 'Психология помогает понять себя и других. Если вас что-то беспокоит, я могу дать несколько советов.',
+                'космос|звезда|галактика|планета|ракета|астронавт|спутник|луна|марс|вселенная|чёрная дыра|солнце': 'Космос — это бесконечное пространство, полное загадок. Чёрные дыры, галактики, поиск жизни на Марсе — всё это захватывает.',
+                'искусство|живопись|музыка|литература|театр|кино|скульптура|архитектура|ван гог|да винчи|бетховен|моцарт|толстой|достоевский': 'Искусство вдохновляет и заставляет задуматься. Что вам ближе: живопись, музыка или литература?',
+                'экология|природа|климат|загрязнение|переработка|энергия|солнце|ветер|вода|лес|животное|растение|углерод': 'Экология — это наш общий дом. Каждый из нас может внести вклад: сортировать мусор, экономить воду.',
+                'экономика|деньги|бизнес|инвестиция|рынок|кризис|инфляция|акция|банк|финанс|стартап|бюджет|зарплата|налог': 'Экономика управляет миром. Я могу объяснить основы или обсудить текущие тренды.',
+                'образование|школа|университет|учитель|экзамен|студент|урок|знание|курс|дистанционное|обучение|лекция|диплом': 'Образование — это фундамент будущего. Сейчас доступно множество онлайн-курсов. Что вы хотите изучить?',
+                'семья|родители|дети|брак|воспитание|отношения|дом|быт|родственник|свадьба|развод|любовь|забота': 'Семья — это самое ценное. Отношения с близкими требуют внимания и любви. Я здесь, чтобы вас выслушать.',
+                'карьера|работа|профессия|должность|резюме|собеседование|коллега|начальник|команда|проект|зарплата|повышение|увольнение': 'Карьера — это путь самореализации. Важно найти то дело, которое приносит удовлетворение.',
+            };
+
+            for (const [key, value] of Object.entries(responses)) {
+                const keys = key.split('|');
+                if (keys.some(k => lower.includes(k))) {
+                    return value;
+                }
+            }
+
+            // Общие ответы
+            const general = [
+                "Интересный вопрос! Я ещё учусь, но готов обсудить любую тему. Уточните, пожалуйста, что именно вас интересует.",
+                "Хм, я не совсем понял. Давайте поговорим о чём-то другом — например, о космосе или технологиях.",
+                "Замечательный вопрос! Давайте подумаем вместе. Возможно, вы имеете в виду что-то конкретное?",
+                "Честно говоря, я не силён в этой теме. Но давайте поговорим о Zetuos10 — она лёгкая, быстрая и приватная.",
+            ];
+            return general[Math.floor(Math.random() * general.length)];
+        }
+
+        // ============================================================
+        // 14. ZetuCommand
+        // ============================================================
+        function copyAndRunCommand() {
+            const script = document.getElementById('zetuCommandScript').textContent;
+            navigator.clipboard.writeText(script).then(() => {
+                showToast('✅ Скрипт скопирован! Откройте CMD и вставьте.', 'success');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = script;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('✅ Скопировано!', 'success');
+            });
+        }
+
+        function runZetuCommand() {
+            showToast('⚙️ Запуск ZetuCommand...', 'success');
+            const btn = document.querySelector('.program-card .btn--primary');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '⏳ Выполняется...';
+            btn.disabled = true;
+            let p = 0;
+            const interval = setInterval(() => {
+                p += 10;
+                if (p >= 100) {
+                    clearInterval(interval);
+                    btn.innerHTML = '✅ Готово!';
+                    setTimeout(() => { btn.innerHTML = orig;
+                        btn.disabled = false; }, 1500);
+                    showToast('✅ Оптимизация завершена!', 'success');
+                } else {
+                    btn.innerHTML = `⏳ Выполняется ${p}%`;
+                }
+            }, 300);
+        }
+
+        // ============================================================
+        // 15. ТОСТЫ
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(40px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        // ============================================================
+        // 16. МОДАЛЬНОЕ ОКНО
+        // ============================================================
+        const modal = document.getElementById('welcomeModal');
+        if (!localStorage.getItem('welcomeShown')) {
+            modal.classList.add('open');
+            localStorage.setItem('welcomeShown', 'true');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+        }
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================================
+        // 17. ИНТЕРАКТИВНЫЕ ЗВЁЗДЫ
+        // ============================================================
+        function initInteractiveStars() {
+            const container = document.getElementById('interactiveStars');
+            const count = 30;
+            const stars = [];
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'i-star';
+                star.style.left = Math.random() * 95 + '%';
+                star.style.top = Math.random() * 95 + '%';
+                star.style.width = star.style.height = (Math.random() * 8 + 4) + 'px';
+                star.dataset.index = i;
+                container.appendChild(star);
+                stars.push(star);
+            }
+
+            function highlightNeighbors(index, active) {
+                const radius = 150;
+                const starEl = stars[index];
+                const rect = starEl.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                stars.forEach((s, idx) => {
+                    const r = s.getBoundingClientRect();
+                    const sx = r.left + r.width / 2;
+                    const sy = r.top + r.height / 2;
+                    const dist = Math.sqrt((cx - sx) ** 2 + (cy - sy) ** 2);
+                    if (dist < radius && idx !== index) {
+                        s.classList.toggle('active', active);
+                    }
+                });
+                starEl.classList.toggle('active', active);
+            }
+
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseenter', function() {
+                    highlightNeighbors(index, true);
+                });
+                star.addEventListener('mouseleave', function() {
+                    highlightNeighbors(index, false);
+                    stars.forEach(s => s.classList.remove('active'));
+                });
+            });
+
+            setInterval(() => {
+                const idx = Math.floor(Math.random() * stars.length);
+                const star = stars[idx];
+                star.style.opacity = '0.2';
+                setTimeout(() => star.style.opacity = '1', 300);
+            }, 2000);
+        }
+        initInteractiveStars();
+
+        // ============================================================
+        // 18. ЧАСТИЦЫ (canvas)
+        // ============================================================
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            const particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1 });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(69, 243, 255, 0.3)';
+                    ctx.fill();
+                });
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(69, 243, 255, ${0.08 * (1 - dist / 120)})`;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+            draw();
+        }
+        initParticles();
+
+        // ============================================================
+        // 19. ИНСТРУМЕНТЫ (виджеты)
+        // ============================================================
+        // Погода
+        function updateWeather() {
+            const temps = [5, 10, 15, 20, 25, 30, -5, 0];
+            const descs = ['Солнечно', 'Облачно', 'Дождь', 'Снег', 'Ветрено', 'Ясно', 'Туман'];
+            const t = temps[Math.floor(Math.random() * temps.length)];
+            const d = descs[Math.floor(Math.random() * descs.length)];
+            document.getElementById('weatherTemp').textContent = t + '°C';
+            document.getElementById('weatherDesc').textContent = d;
+            localStorage.setItem('weather', JSON.stringify({ temp: t, desc: d }));
+        }
+        const savedWeather = localStorage.getItem('weather');
+        if (savedWeather) {
+            const w = JSON.parse(savedWeather);
+            document.getElementById('weatherTemp').textContent = w.temp + '°C';
+            document.getElementById('weatherDesc').textContent = w.desc;
+        } else { updateWeather(); }
+
+        // Задачи
+        function loadTasks() {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+                li.style.padding = '6px 0';
+                li.style.borderBottom = '1px solid var(--border)';
+                li.innerHTML =
+                    `<span>${task}</span><button class="btn btn--small btn--ghost" onclick="removeTask(${index})" style="padding:2px 10px;">✕</button>`;
+                list.appendChild(li);
+            });
+        }
+        loadTasks();
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.push(text);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            input.value = '';
+            loadTasks();
+            showToast('✅ Задача добавлена', 'success');
+        }
+
+        function removeTask(index) {
+            const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        // Калькулятор
+        let calcDisplay = document.getElementById('calcDisplay');
+        let calcExpression = '';
+
+        function calcPress(value) {
+            if (value === '=') {
+                try { calcExpression = eval(calcExpression) || '';
+                    calcDisplay.value = calcExpression; } catch { calcDisplay.value = 'Ошибка';
+                    calcExpression = ''; }
+            } else { calcExpression += value;
+                calcDisplay.value = calcExpression; }
+        }
+
+        function calcClear() { calcExpression = '';
+            calcDisplay.value = ''; }
+
+        // Цитата дня
+        const quotes = [
+            { text: "Лучший способ предсказать будущее — создать его.", author: "Питер Друкер" },
+            { text: "Сложнее всего начать действовать, все остальное зависит только от упорства.", author: "Амелия Эрхарт" },
+            { text: "Ваше время ограничено, не тратьте его на чужую жизнь.", author: "Стив Джобс" },
+            { text: "Будьте изменением, которое хотите видеть в мире.", author: "Махатма Ганди" },
+            { text: "Успех — это способность идти от одной неудачи к другой, не теряя энтузиазма.", author: "Уинстон Черчилль" },
+        ];
+
+        function updateQuote() {
+            const q = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quoteText').textContent = `«${q.text}»`;
+            document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
+            localStorage.setItem('quote', JSON.stringify(q));
+        }
+        const savedQuote = localStorage.getItem('quote');
+        if (savedQuote) {
+            const q = JSON.parse(savedQuote);
+            document.getElementById('quoteText').textContent = `«${q.text}»`;
+            document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
+        } else { updateQuote(); }
+
+        // Угадай число
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function makeGuess() {
+            const input = document.getElementById('guessInput');
+            const guess = parseInt(input.value);
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                document.getElementById('guessResult').textContent = 'Введите число от 1 до 100.';
+                return;
+            }
+            attempts++;
+            const result = document.getElementById('guessResult');
+            if (guess === secretNumber) {
+                result.textContent = `🎉 Поздравляю! Вы угадали за ${attempts} попыток!`;
+                result.style.color = 'var(--accent)';
+                secretNumber = Math.floor(Math.random() * 100) + 1;
+                attempts = 0;
+            } else if (guess < secretNumber) {
+                result.textContent = '📈 Загаданное число больше.';
+                result.style.color = 'var(--text-secondary)';
+            } else {
+                result.textContent = '📉 Загаданное число меньше.';
+                result.style.color = 'var(--text-secondary)';
+            }
+            input.value = '';
+        }
+
+        function resetGuess() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            document.getElementById('guessResult').textContent = 'Новая игра! Я загадал число от 1 до 100.';
+            document.getElementById('guessResult').style.color = 'var(--text-secondary)';
+            document.getElementById('guessInput').value = '';
+        }
+
+        // Будильник
+        let alarmTimeout = null;
+
+        function setAlarm() {
+            const time = document.getElementById('alarmTime').value;
+            if (!time) return;
+            const now = new Date();
+            const [hours, minutes] = time.split(':').map(Number);
+            const alarmDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+            if (alarmDate <= now) { alarmDate.setDate(alarmDate.getDate() + 1); }
+            const diff = alarmDate - now;
+            if (alarmTimeout) clearTimeout(alarmTimeout);
+            alarmTimeout = setTimeout(() => {
+                showToast('⏰ Будильник сработал! Время ' + time, 'success');
+                document.getElementById('alarmStatus').textContent = 'Будильник сработал!';
+                alarmTimeout = null;
+            }, diff);
+            document.getElementById('alarmStatus').textContent = `Будильник установлен на ${time}`;
+            showToast(`⏰ Будильник установлен на ${time}`, 'success');
+        }
+
+        // ============================================================
+        // 20. КЛАВИАТУРА
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === '1') switchPage('page-home');
+            if (e.ctrlKey && e.key === '2') switchPage('page-downloads');
+            if (e.ctrlKey && e.key === '3') switchPage('page-programs');
+            if (e.ctrlKey && e.key === '4') switchPage('page-wiki');
+            if (e.ctrlKey && e.key === '5') switchPage('page-ai');
+            if (e.ctrlKey && e.key === '6') switchPage('page-tools');
+            if (e.key === 'Escape') {
+                document.getElementById('navLinks').classList.remove('open');
+                closeModal();
+            }
+        });
+
+        // ============================================================
+        // 21. ИНИЦИАЛИЗАЦИЯ
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!document.querySelector('.page.active')) {
+                document.getElementById('page-home').classList.add('active');
+                document.querySelector('.nav-btn[data-page="page-home"]').classList.add('active');
+            }
+            setTimeout(() => {
+                showToast('🚀 Zetuos10 Lite уже здесь! Скачайте сейчас.', 'success');
+            }, 1200);
+            console.log('🚀 Zetuos10 Lite — релизный сайт загружен!');
+        });
+    </script>
+</body>
+</html>
