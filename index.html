@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zetu</title>
+    <title>Zetu — Операционные системы</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <style>
-        /* ===== Глобальные переменные ===== */
+        /* ===== ГЛОБАЛЬНЫЕ ===== */
         :root {
             --bg: #080a12;
             --surface: rgba(255, 255, 255, 0.04);
@@ -19,7 +19,7 @@
             --radius: 16px;
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             --transition: 0.3s;
-            --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         .light-theme {
@@ -31,7 +31,6 @@
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
         }
 
-        /* ===== Общие ===== */
         * {
             margin: 0;
             padding: 0;
@@ -48,13 +47,13 @@
             line-height: 1.6;
             transition: background 0.4s, color 0.4s;
             overflow-x: hidden;
+            min-height: 100vh;
         }
         ::selection {
             background: var(--accent);
             color: #0a0b14;
         }
 
-        /* ===== Фоновое свечение ===== */
         .bg-glow {
             position: fixed;
             top: 0;
@@ -68,7 +67,6 @@
             z-index: 0;
         }
 
-        /* ===== Прогресс-бар ===== */
         #progress-bar {
             position: fixed;
             top: 0;
@@ -81,7 +79,6 @@
             box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        /* ===== Навигация ===== */
         nav {
             position: fixed;
             top: 0;
@@ -115,6 +112,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
         }
         .logo span {
             color: var(--accent);
@@ -209,7 +207,6 @@
             transition: 0.3s;
         }
 
-        /* ===== Страницы ===== */
         .page {
             display: none;
             padding-top: 88px;
@@ -236,6 +233,7 @@
             margin: 0 auto;
             padding: 40px 24px;
         }
+
         .section-title {
             font-size: 2.6rem;
             font-weight: 700;
@@ -254,7 +252,6 @@
             margin: -30px auto 50px;
         }
 
-        /* ===== Hero ===== */
         .hero {
             min-height: 85vh;
             display: flex;
@@ -313,27 +310,264 @@
             margin-bottom: 36px;
             line-height: 1.7;
         }
-        .hero .download-info {
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 40px 0 60px;
+        }
+        .os-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+        .os-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(69, 243, 255, 0.03));
+            opacity: 0;
+            transition: 0.4s;
+        }
+        .os-card:hover::before {
+            opacity: 1;
+        }
+        .os-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+        .os-card .icon {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .os-card .name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .os-card .name span {
+            color: var(--accent);
+        }
+        .os-card .version {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
         }
-        .hero .download-info strong {
-            color: var(--text);
+        .os-card .size {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            background: rgba(69, 243, 255, 0.1);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
-        .hero-actions {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .os-card .desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .os-card .btn {
+            padding: 8px 20px;
+            font-size: 0.8rem;
         }
 
-        /* ===== Кнопки ===== */
+        .os-page {
+            padding-top: 20px;
+        }
+        .os-page .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        .os-page .back-link:hover {
+            opacity: 0.7;
+        }
+        .os-page .os-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .os-page .os-header .icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .os-page .os-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+        .os-page .os-header h1 span {
+            color: var(--accent);
+        }
+        .os-page .os-header .sub {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .os-page .os-header .badge {
+            display: inline-block;
+            padding: 4px 18px;
+            border-radius: 40px;
+            background: rgba(69, 243, 255, 0.15);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid rgba(69, 243, 255, 0.2);
+        }
+
+        .os-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 30px;
+            margin-bottom: 24px;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .os-block:hover {
+            border-color: rgba(69, 243, 255, 0.15);
+        }
+        .os-block h3 {
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .os-block h3 span {
+            color: var(--accent);
+        }
+        .os-block .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .os-block .grid-2 .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .os-block .grid-2 .item strong {
+            color: var(--text);
+        }
+        .os-block ul {
+            list-style: none;
+            padding: 0;
+        }
+        .os-block ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .os-block ul li:last-child {
+            border: none;
+        }
+        .os-block ul li .check {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .os-block ul li .cross {
+            color: var(--warning);
+            font-weight: 700;
+        }
+
+        .recovery-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .recovery-btns .btn {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        .app-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 10px;
+            text-align: center;
+            transition: 0.2s;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .app-item:hover {
+            border-color: var(--accent);
+            background: rgba(69, 243, 255, 0.04);
+        }
+        .app-item .icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .download-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .download-btns .btn {
+            padding: 12px 28px;
+            font-size: 0.95rem;
+        }
+
+        .creator-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .creator-info .socials {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+        .creator-info .socials a {
+            color: var(--text-secondary);
+            transition: 0.2s;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .creator-info .socials a:hover {
+            color: var(--accent);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 16px 44px;
+            padding: 14px 36px;
             font-size: 1rem;
             font-weight: 700;
             border: none;
@@ -345,6 +579,7 @@
             background: var(--accent);
             color: #0a0b14;
             box-shadow: 0 0 30px var(--accent-glow);
+            text-decoration: none;
         }
         .btn:hover {
             transform: translateY(-3px);
@@ -368,8 +603,8 @@
         .btn--download {
             background: linear-gradient(135deg, #00d4ff, var(--accent));
             color: #0a0b14;
-            font-size: 1.2rem;
-            padding: 18px 54px;
+            font-size: 1.1rem;
+            padding: 16px 48px;
             box-shadow: 0 0 40px var(--accent-glow);
         }
         .btn--download:hover {
@@ -380,265 +615,16 @@
             padding: 10px 24px;
             font-size: 0.85rem;
         }
-
-        /* ===== Блок преимуществ ===== */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 60px 0 80px;
-        }
-        .feature-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 28px;
-            transition: 0.3s;
-            text-align: center;
-            backdrop-filter: blur(4px);
-        }
-        .feature-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
-        }
-        .feature-card .icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            display: block;
-        }
-        .feature-card h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .feature-card h3 span {
-            color: var(--accent);
-        }
-        .feature-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* ===== Цитаты Стехмана ===== */
-        .stehman-quote {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px 28px;
-            max-width: 700px;
-            margin: 0 auto 60px;
-            text-align: center;
-            transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-        .stehman-quote:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-        .stehman-quote .quote-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .stehman-quote .quote-text {
-            font-size: 1.3rem;
-            font-style: italic;
-            color: var(--text);
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-        .stehman-quote .quote-author {
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        .stehman-quote .quote-controls {
-            margin-top: 16px;
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        /* ===== Сравнение ===== */
-        .compare-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 80px;
-        }
-        .compare-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 30px;
-            transition: 0.3s;
-        }
-        .compare-box:hover {
-            transform: translateY(-4px);
-        }
-        .compare-box.bad {
-            border-left: 4px solid var(--warning);
-        }
-        .compare-box.good {
-            border-left: 4px solid var(--accent);
-        }
-        .compare-box h4 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .compare-box ul {
-            list-style: none;
-        }
-        .compare-box ul li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.98rem;
-        }
-        .compare-box ul li:last-child {
-            border: none;
-        }
-        .compare-box.bad ul li::before {
-            content: '✕';
-            color: var(--warning);
-            font-weight: 700;
-        }
-        .compare-box.good ul li::before {
-            content: '✓';
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        /* ===== Галерея (слайдер) ===== */
-        .gallery-slider {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto 80px;
-            overflow: hidden;
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            background: var(--surface);
-        }
-        .gallery-slider .slides {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-        .gallery-slider .slide {
-            min-width: 100%;
-            aspect-ratio: 16/9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: var(--text-secondary);
-            background: var(--bg);
-            position: relative;
-        }
-        .gallery-slider .slide .label {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(6px);
-            padding: 6px 18px;
-            border-radius: 6px;
-            font-size: 0.9rem;
+        .btn--danger {
+            background: var(--warning);
             color: #fff;
-            font-weight: 500;
+            box-shadow: 0 0 30px rgba(255, 75, 90, 0.3);
         }
-        .gallery-slider .btn-slide {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            color: #fff;
-            border: none;
-            padding: 12px 16px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            border-radius: 8px;
-            transition: 0.3s;
-            z-index: 10;
-        }
-        .gallery-slider .btn-slide:hover {
-            background: var(--accent);
-            color: #0a0b14;
-        }
-        .gallery-slider .btn-slide.prev {
-            left: 10px;
-        }
-        .gallery-slider .btn-slide.next {
-            right: 10px;
-        }
-        .gallery-slider .dots {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 0;
-        }
-        .gallery-slider .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--border);
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .gallery-slider .dot.active {
-            background: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
+        .btn--danger:hover {
+            box-shadow: 0 0 50px rgba(255, 75, 90, 0.5);
         }
 
-        /* ===== Опрос ===== */
-        .poll {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px 28px;
-            max-width: 600px;
-            margin: 0 auto 80px;
-            text-align: center;
-        }
-        .poll h3 {
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
-        .poll .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: stretch;
-        }
-        .poll .option {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 18px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .poll .option:hover {
-            border-color: var(--accent);
-            background: rgba(69, 243, 255, 0.05);
-        }
-        .poll .option .vote-count {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* ===== Вики ===== */
+        /* ===== ВИКИ ===== */
         .wiki-container {
             max-width: 1000px;
             margin: 0 auto;
@@ -674,15 +660,14 @@
             border-radius: var(--radius);
             padding: 24px 28px;
             transition: 0.3s;
-            cursor: pointer;
         }
         .wiki-entry:hover {
             border-color: var(--accent);
             transform: translateX(4px);
         }
         .wiki-entry h3 {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
             color: var(--accent);
         }
         .wiki-entry p {
@@ -692,7 +677,7 @@
         .wiki-entry .tags {
             display: flex;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         .wiki-entry .tags span {
@@ -707,7 +692,7 @@
             display: none;
         }
 
-        /* ===== AI Чат ===== */
+        /* ===== ZetuAI ===== */
         .ai-chat {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -825,7 +810,7 @@
             }
         }
 
-        /* ===== Настройки ===== */
+        /* ===== НАСТРОЙКИ ===== */
         .settings-panel {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -890,7 +875,7 @@
             left: 26px;
         }
 
-        /* ===== Кликер ===== */
+        /* ===== КЛИКЕР ===== */
         .clicker-game {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -921,280 +906,6 @@
             transform: scale(1.05);
         }
 
-        /* ===== Команда ===== */
-        .team-single {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-        .team-single .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: var(--accent);
-            margin: 0 auto 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            font-weight: 700;
-            color: #0a0b14;
-            box-shadow: 0 0 40px var(--accent-glow);
-        }
-        .team-single .name {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        .team-single .role {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-        .team-single .bio {
-            max-width: 500px;
-            margin: 16px auto 0;
-            color: var(--text-secondary);
-        }
-
-        /* ===== Спецификации ===== */
-        .specs-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        .spec-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px 28px;
-            transition: 0.3s;
-        }
-        .spec-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-        .spec-card h5 {
-            color: var(--accent);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .spec-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        .spec-row:last-child {
-            border: none;
-        }
-        .spec-row strong {
-            color: var(--text);
-        }
-        .light-theme .spec-row {
-            border-bottom-color: rgba(0, 0, 0, 0.04);
-        }
-
-        /* ===== Загрузки и программы ===== */
-        .downloads-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
-        }
-        .download-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 28px;
-            text-align: center;
-            transition: 0.3s;
-        }
-        .download-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
-        }
-        .download-card .version {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-        }
-        .download-card .status {
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 12px 0;
-        }
-        .status.ready {
-            background: rgba(69, 243, 255, 0.2);
-            color: var(--accent);
-        }
-        .status.coming {
-            background: rgba(255, 200, 0, 0.15);
-            color: #fbbf24;
-        }
-        .status.not-started {
-            background: rgba(255, 75, 90, 0.15);
-            color: var(--warning);
-        }
-        .status.started {
-            background: rgba(255, 200, 0, 0.15);
-            color: #fbbf24;
-            border: 1px solid #fbbf24;
-        }
-
-        .programs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
-        }
-        .program-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 28px;
-            transition: 0.3s;
-        }
-        .program-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
-        .program-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-        .program-card h3 span {
-            color: var(--accent);
-        }
-        .program-card .desc {
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-        .program-card .code-box {
-            background: #0a0b14;
-            border-radius: 8px;
-            padding: 16px 18px;
-            max-height: 300px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: #a6accd;
-            white-space: pre-wrap;
-            word-break: break-all;
-            border: 1px solid var(--border);
-        }
-        .light-theme .program-card .code-box {
-            background: #e8eaef;
-            color: #1a1c2a;
-        }
-        .program-card .code-box::-webkit-scrollbar {
-            width: 6px;
-        }
-        .program-card .code-box::-webkit-scrollbar-track {
-            background: var(--surface);
-            border-radius: 4px;
-        }
-        .program-card .code-box::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 4px;
-        }
-
-        /* ===== Подписка ===== */
-        .subscribe-form {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 40px 36px;
-            max-width: 600px;
-            margin: 0 auto 80px;
-            text-align: center;
-            backdrop-filter: blur(4px);
-            transition: 0.3s;
-        }
-        .subscribe-form:hover {
-            border-color: var(--accent);
-        }
-        .subscribe-form h3 {
-            font-size: 1.6rem;
-            margin-bottom: 12px;
-        }
-        .subscribe-form p {
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-        }
-        .subscribe-form .input-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .subscribe-form input {
-            flex: 1;
-            min-width: 200px;
-            padding: 14px 18px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1rem;
-            transition: 0.3s;
-            outline: none;
-        }
-        .subscribe-form input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        /* ===== Общие элементы ===== */
-        .fact-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px 30px;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            text-align: center;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            font-style: italic;
-            backdrop-filter: blur(4px);
-        }
-        .fact-box .fact-icon {
-            font-size: 2rem;
-            margin-right: 12px;
-        }
-        .visit-counter {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-        .badge {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: var(--accent);
-            color: #0a0b14;
-        }
-        .flex-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        /* ===== Footer ===== */
         footer {
             border-top: 1px solid var(--border);
             padding: 40px 24px 28px;
@@ -1233,7 +944,6 @@
             color: var(--accent);
         }
 
-        /* ===== Кнопка наверх ===== */
         #back-to-top {
             position: fixed;
             bottom: 30px;
@@ -1263,7 +973,6 @@
             box-shadow: 0 0 50px var(--accent);
         }
 
-        /* ===== Тосты ===== */
         #toast-container {
             position: fixed;
             bottom: 100px;
@@ -1305,7 +1014,6 @@
             }
         }
 
-        /* ===== Модалка ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1352,8 +1060,10 @@
             margin-bottom: 24px;
         }
 
-        /* ===== Адаптив ===== */
         @media (max-width: 1024px) {
+            .os-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
             .hero h1 {
                 font-size: 3.8rem;
             }
@@ -1394,10 +1104,6 @@
             .hero p {
                 font-size: 1rem;
             }
-            .compare-grid,
-            .specs-grid {
-                grid-template-columns: 1fr;
-            }
             .section-title {
                 font-size: 1.9rem;
             }
@@ -1409,18 +1115,8 @@
                 font-size: 1rem;
                 padding: 16px 34px;
             }
-            .hero-actions {
-                flex-direction: column;
-                align-items: center;
-            }
-            .hero-actions .btn {
-                width: 100%;
-                max-width: 320px;
-                justify-content: center;
-            }
-            .gallery-slider .btn-slide {
-                padding: 8px 12px;
-                font-size: 1.2rem;
+            .os-block .grid-2 {
+                grid-template-columns: 1fr;
             }
             .settings-panel {
                 padding: 20px;
@@ -1432,20 +1128,13 @@
             .setting-group input[type="range"] {
                 width: 100%;
             }
-            .downloads-grid,
-            .programs-grid {
-                grid-template-columns: 1fr;
-            }
             .ai-chat .messages .msg {
                 max-width: 100%;
             }
             .ai-chat .messages .msg .bubble {
                 font-size: 0.95rem;
             }
-            .stehman-quote .quote-text {
-                font-size: 1.1rem;
-            }
-            .features-grid {
+            .os-grid {
                 grid-template-columns: 1fr;
             }
             footer .footer-links {
@@ -1459,13 +1148,11 @@
             .logo {
                 font-size: 1.2rem;
             }
-            .team-single .avatar {
-                width: 80px;
-                height: 80px;
-                font-size: 2rem;
-            }
             .modal {
                 padding: 24px 18px;
+            }
+            .app-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         .text-accent {
@@ -1480,22 +1167,21 @@
         .text-center {
             text-align: center;
         }
+        .gap-8 {
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Фон -->
     <div class="bg-glow"></div>
     <div id="progress-bar"></div>
 
-    <!-- ===== НАВИГАЦИЯ ===== -->
     <nav id="navbar">
-        <div class="logo">Zetu<span>OS</span><small>10 Lite</small></div>
+        <div class="logo" onclick="switchPage('page-home')">Zetu<span>OS</span><small>проект</small></div>
         <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
         <div class="nav-links" id="navLinks">
             <button class="nav-btn active" data-page="page-home">Главная</button>
-            <button class="nav-btn" data-page="page-downloads">Загрузки</button>
-            <button class="nav-btn" data-page="page-programs">Программы</button>
             <button class="nav-btn" data-page="page-wiki">Вики</button>
             <button class="nav-btn" data-page="page-ai">ZetuAI</button>
             <button class="nav-btn" data-page="page-tools">Инструменты</button>
@@ -1503,285 +1189,125 @@
         </div>
     </nav>
 
-    <!-- ===== МОДАЛЬНОЕ ОКНО (приветствие) ===== -->
     <div class="modal-overlay" id="welcomeModal">
         <div class="modal">
-            <h2>🎉 ZetuOS <span>10 Lite</span></h2>
-            <p>Самая быстрая и лёгкая сборка Windows 10 уже здесь. Полная приватность, максимальный FPS и минимальный размер.</p>
-            <button class="btn btn--primary" onclick="closeModal()">Отлично!</button>
+            <h2>Добро пожаловать в <span>Zetu</span></h2>
+            <p>Проект по созданию оптимизированных сборок Windows. Выберите свою идеальную систему.</p>
+            <button class="btn btn--primary" onclick="closeModal()">Начать</button>
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ГЛАВНАЯ -->
-    <!-- ============================================================ -->
+    <!-- ===== ГЛАВНАЯ ===== -->
     <section class="page active" id="page-home">
         <div class="hero">
-            <div class="hero-badge">🔥 Релиз состоялся!</div>
-            <h1>ZetuOS 10 Lite</h1>
-            <p>
-                Лёгкая, быстрая и приватная сборка Windows 10 уже здесь. Наслаждайтесь максимальной производительностью, минимальным потреблением ресурсов и полным контролем над системой.
-            </p>
-
-            <!-- Информация о файле -->
-            <div class="download-info">
-                <strong>Версия:</strong> 22H2 x64 &bull;
-                <strong>Размер ISO:</strong> 4.0 ГБ &bull;
-                <strong>Обновлено:</strong> 15 июля 2026
-            </div>
-
-            <!-- Кнопка скачивания -->
-            <div class="hero-actions">
-                <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание ZetuOS 10 Lite начато!', 'success')">
-                    ⬇️ Скачать ZetuOS 10 Lite
-                </a>
-                <button class="btn btn--ghost" onclick="switchPage('page-downloads')">Подробнее</button>
-            </div>
+            <div class="hero-badge">🔥 Шесть версий — одна цель</div>
+            <h1>Выбери свою <span>ZetuOS</span></h1>
+            <p>Полные и облегчённые сборки Windows 10, 8.1 и 11. Все системы оптимизированы, вычищены от телеметрии и готовы к работе.</p>
         </div>
 
         <div class="container">
-            <!-- Виджет цитат Стехмана -->
-            <div class="stehman-quote" id="stehmanQuote">
-                <span class="quote-icon">😂</span>
-                <div class="quote-text" id="stehmanText">Загрузка цитаты...</div>
-                <div class="quote-author" id="stehmanAuthor">— Стехман</div>
-                <div class="quote-controls">
-                    <button class="btn btn--small btn--ghost" onclick="nextStehmanQuote()">Следующая ➜</button>
+            <div class="os-grid" id="osGrid"></div>
+
+            <!-- ZetuTweaker -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:30px 28px; text-align:center; margin-bottom:60px; backdrop-filter:blur(4px);">
+                <span style="font-size:2.5rem; display:block; margin-bottom:10px;">⚙️</span>
+                <h3 style="font-size:1.6rem; margin-bottom:8px;">Zetu<span style="color:var(--accent);">Tweaker</span></h3>
+                <p style="color:var(--text-secondary); max-width:600px; margin:0 auto 16px;">
+                    Универсальный инструмент для тонкой настройки Windows. Отключение телеметрии, оптимизация реестра, управление службами — всё в одном месте.
+                </p>
+                <div style="display:inline-block; padding:4px 20px; border-radius:40px; background:rgba(255,200,0,0.15); color:#fbbf24; font-size:0.8rem; font-weight:600; border:1px solid #fbbf24; margin-bottom:16px;">
+                    🚧 Разработка начинается
+                </div>
+                <div>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('ZetuTweaker — в разработке! Следите за новостями.')">Узнать больше</button>
                 </div>
             </div>
 
-            <!-- Блок преимуществ -->
-            <h2 class="section-title">Почему <span>ZetuOS 10 Lite</span>?</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <span class="icon">⚡</span>
-                    <h3><span>#</span>Максимальная производительность</h3>
-                    <p>Вырезаны все фоновые службы и телеметрия. DPC-задержка снижена до минимума — идеально для игр и работы.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="icon">🔒</span>
-                    <h3><span>#</span>Абсолютная приватность</h3>
-                    <p>Удалены Cortana, OneDrive, сбор биометрии и отправка отчётов Microsoft. Ваши данные — только ваши.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="icon">💾</span>
-                    <h3><span>#</span>Оптимальный размер</h3>
-                    <p>ISO-образ весит <strong>4.0 ГБ</strong> — всё необходимое для работы и игр без компромиссов.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="icon">🎮</span>
-                    <h3><span>#</span>Оптимизация для игр</h3>
-                    <p>Прирост FPS до 20%, быстрый запуск и низкое потребление ОЗУ — всего <strong>0.8–1.1 ГБ</strong> в простое.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="icon">🛠️</span>
-                    <h3><span>#</span>Гибкие настройки</h3>
-                    <p>Встроенный твикер и скрипт оптимизации позволяют настроить систему под любые задачи.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="icon">📦</span>
-                    <h3><span>#</span>Полная совместимость</h3>
-                    <p>Все программы и игры для Windows 10 работают без проблем. Драйвера устанавливаются стандартно.</p>
-                </div>
+            <!-- Цитата Стехмана -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 28px; max-width:700px; margin:0 auto 60px; text-align:center; backdrop-filter:blur(4px);">
+                <span style="font-size:2rem; display:block; margin-bottom:6px;">😂</span>
+                <div style="font-size:1.2rem; font-style:italic; color:var(--text);" id="stehmanText">Загрузка цитаты...</div>
+                <div style="color:var(--accent); font-weight:600; margin-top:6px;" id="stehmanAuthor">— Стехман</div>
+                <button class="btn btn--small btn--ghost" onclick="nextStehmanQuote()" style="margin-top:12px;">Следующая ➜</button>
             </div>
-
-            <!-- Сравнение с обычной Windows 10 -->
-            <h2 class="section-title">ZetuOS 10 Lite vs <span>Windows 10</span></h2>
-            <div class="compare-grid">
-                <div class="compare-box bad">
-                    <h4>💀 Обычная Windows 10</h4>
-                    <ul>
-                        <li>150+ фоновых процессов</li>
-                        <li>Потребление ОЗУ от 2.5 ГБ</li>
-                        <li>Принудительные обновления</li>
-                        <li>Встроенная реклама и телеметрия</li>
-                        <li>Размер ISO 4–8 ГБ</li>
-                    </ul>
-                </div>
-                <div class="compare-box good">
-                    <h4>🚀 ZetuOS 10 Lite</h4>
-                    <ul>
-                        <li>Всего 45–50 фоновых процессов</li>
-                        <li>Потребление ОЗУ 0.8–1.1 ГБ</li>
-                        <li>Обновления по вашему запросу</li>
-                        <li>Полная приватность без слежки</li>
-                        <li>Размер ISO 4.0 ГБ</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Галерея скриншотов -->
-            <h2 class="section-title">Галерея <span>интерфейса</span></h2>
-            <div class="gallery-slider" id="gallerySlider">
-                <div class="slides" id="slides">
-                    <div class="slide" style="background: linear-gradient(135deg, #1a1c2a, #2d3040);">
-                        🖥️
-                        <span class="label">Рабочий стол</span>
-                    </div>
-                    <div class="slide" style="background: linear-gradient(135deg, #0f111e, #1e2032);">
-                        ⚙️
-                        <span class="label">Настройки</span>
-                    </div>
-                    <div class="slide" style="background: linear-gradient(135deg, #121624, #252a3a);">
-                        🎮
-                        <span class="label">Игровой режим</span>
-                    </div>
-                    <div class="slide" style="background: linear-gradient(135deg, #141826, #2a2f42);">
-                        📊
-                        <span class="label">Диспетчер задач</span>
-                    </div>
-                </div>
-                <button class="btn-slide prev" onclick="changeSlide(-1)">❮</button>
-                <button class="btn-slide next" onclick="changeSlide(1)">❯</button>
-                <div class="dots" id="dotsContainer"></div>
-            </div>
-
-            <!-- Опрос -->
-            <h2 class="section-title">Мнение <span>сообщества</span></h2>
-            <div class="poll" id="poll">
-                <h3>Что вам нравится в ZetuOS 10 Lite?</h3>
-                <div class="options" id="pollOptions">
-                    <div class="option" data-option="0"><span>⚡ Производительность</span><span class="vote-count">0%</span></div>
-                    <div class="option" data-option="1"><span>🔒 Приватность</span><span class="vote-count">0%</span></div>
-                    <div class="option" data-option="2"><span>💾 Оптимальный размер</span><span class="vote-count">0%</span></div>
-                    <div class="option" data-option="3"><span>🎮 Игровая оптимизация</span><span class="vote-count">0%</span></div>
-                </div>
-                <div style="margin-top:12px; color:var(--text-secondary);">Всего голосов: <span id="totalVotes">0</span></div>
-            </div>
-
-            <!-- Настройки сайта -->
-            <h2 class="section-title">Настройки <span>сайта</span></h2>
-            <div class="settings-panel" id="settingsPanel">
-                <h3>Персонализация</h3>
-                <div class="setting-group">
-                    <label>Размер текста</label>
-                    <input type="range" min="0.8" max="1.4" step="0.05" value="1" id="fontSizeRange" />
-                </div>
-                <div class="setting-group">
-                    <label>Семейство шрифтов</label>
-                    <select id="fontFamilySelect">
-                        <option value="'Segoe UI', system-ui, sans-serif">Segoe UI</option>
-                        <option value="'Roboto', sans-serif">Roboto</option>
-                        <option value="'Arial', sans-serif">Arial</option>
-                        <option value="'Georgia', serif">Georgia</option>
-                    </select>
-                </div>
-                <div class="setting-group">
-                    <label>Тёмная тема</label>
-                    <div class="toggle-switch active" id="themeToggleSwitch"><div class="slider"></div></div>
-                </div>
-            </div>
-
-            <!-- Мини-игра кликер -->
-            <h2 class="section-title">Мини-игра <span>Кликер</span></h2>
-            <div class="clicker-game">
-                <div class="score" id="clickerScore">0</div>
-                <button class="click-btn" id="clickerBtn">👆 Нажми меня</button>
-                <p style="margin-top:10px; color:var(--text-secondary);">Кликай и собирай очки!</p>
-                <button class="btn btn--small btn--ghost" onclick="resetClicker()" style="margin-top:10px;">Сбросить</button>
-            </div>
-
-            <!-- Команда -->
-            <h2 class="section-title">Создатели <span>проекта</span></h2>
-            <div class="team-single">
-                <div class="avatar">A</div>
-                <div class="name">Alxiizzz <span style="font-size:0.8rem; color:var(--text-secondary);">&amp; Пашаонт тестер</span></div>
-                <div class="role">Главный разработчик и тестер</div>
-                <div class="bio">Alxiizzz — создатель ZetuOS 10 Lite. Пашаонт тестер — главный бета-тестер и идеолог улучшений.</div>
-            </div>
-
-            <!-- Подписка на новости -->
-            <div class="subscribe-form" id="subscribeForm">
-                <h3>📩 Подписаться на обновления</h3>
-                <p>Получайте уведомления о новых версиях и полезных советах.</p>
-                <div class="input-group">
-                    <input type="email" id="emailInput" placeholder="Ваш email" />
-                    <button class="btn btn--primary btn--small" onclick="subscribe()">Подписаться</button>
-                </div>
-                <div style="margin-top:12px; font-size:0.85rem; color:var(--text-secondary);">
-                    Мы не передаём данные третьим лицам.
-                </div>
-            </div>
-
-            <!-- Счётчик посещений -->
-            <div class="visit-counter" id="visitCounter"></div>
         </div>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ЗАГРУЗКИ -->
-    <!-- ============================================================ -->
-    <section class="page" id="page-downloads">
-        <div class="container">
-            <h2 class="section-title">Доступные <span>версии</span></h2>
-            <div class="downloads-grid">
-                <div class="download-card">
-                    <div class="version">ZetuOS 10 Lite</div>
-                    <div class="status ready">✔ Доступна</div>
-                    <p class="desc">
-                        Лёгкая, быстрая и приватная сборка на базе Windows 10.<br />
-                        <strong>Версия:</strong> 22H2 x64<br />
-                        <strong>Размер:</strong> 4.0 ГБ
+    <!-- ===== СТРАНИЦА ОС ===== -->
+    <section class="page" id="page-os">
+        <div class="container os-page">
+            <div class="back-link" onclick="switchPage('page-home')">← На главную</div>
+            <div class="os-header">
+                <span class="icon" id="osIcon">🪟</span>
+                <h1 id="osTitle">ZetuOS <span id="osVersionSpan">10</span> <span id="osEditionSpan">Full</span></h1>
+                <div class="sub" id="osSub">22H2 x64 • Полная</div>
+                <div class="badge" id="osBadge">✅ Доступна для скачивания</div>
+            </div>
+
+            <div class="os-block">
+                <h3><span>📋</span> О системе</h3>
+                <div class="grid-2" id="osSpecs"></div>
+            </div>
+
+            <div class="os-block">
+                <h3><span>🗑️</span> Что удалено</h3>
+                <ul id="osRemoved"></ul>
+            </div>
+
+            <div class="os-block">
+                <h3><span>⚡</span> Оптимизации</h3>
+                <ul id="osOptimized"></ul>
+            </div>
+
+            <div class="os-block">
+                <h3><span>🛠️</span> Система и восстановление</h3>
+                <div class="recovery-btns">
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Запуск SFC /scannow...')">🔄 Восстановить SFC</button>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Запуск DISM...')">🔄 Восстановить DISM</button>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Очистка TEMP...')">🧹 Очистить TEMP</button>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Отключение гибернации...')">💤 Отключить гибернацию</button>
+                    <button class="btn btn--small btn--ghost" onclick="showToast('Отключение UAC...')">🔒 Отключить UAC</button>
+                </div>
+            </div>
+
+            <div class="os-block">
+                <h3><span>📦</span> Приложения в комплекте</h3>
+                <div class="app-grid" id="osApps"></div>
+            </div>
+
+            <div class="os-block" style="text-align:center; border-color:var(--accent);">
+                <h3 style="justify-content:center;"><span>⬇️</span> Скачать</h3>
+                <p style="color:var(--text-secondary); margin-bottom:16px;">
+                    Нажмите кнопку ниже, чтобы скачать ISO-образ. Размер: <strong id="osDownloadSize">5.8 ГБ</strong>
+                </p>
+                <div class="download-btns">
+                    <a href="#" id="osDownloadLinkDef" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание с Defender начато!')">
+                        ⬇️ Скачать с Defender
+                    </a>
+                    <a href="#" id="osDownloadLinkNoDef" target="_blank" class="btn btn--download" onclick="showToast('⬇️ Скачивание без Defender начато!')" style="background:var(--warning); box-shadow:0 0 30px rgba(255,75,90,0.3);">
+                        ⬇️ Скачать без Defender
+                    </a>
+                </div>
+            </div>
+
+            <div class="os-block">
+                <h3 style="justify-content:center;"><span>👨‍💻</span> О создателе</h3>
+                <div class="creator-info">
+                    <div style="font-weight:600; font-size:1.2rem;">Alxiizzz <span style="color:var(--text-secondary); font-weight:400;">&amp;</span> Пашаонт тестер</div>
+                    <p style="color:var(--text-secondary); text-align:center; max-width:400px;">
+                        Разработчики ZetuOS. Создаём оптимизированные системы для геймеров и профессионалов.
                     </p>
-                    <a href="https://drive.google.com/uc?export=download&id=1ul49O2GbSVnvZafc4eUNklO2gCE7M6Go" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
-                </div>
-                <div class="download-card">
-                    <div class="version">ZetuOS 8.1 Lite</div>
-                    <div class="status ready">✔ Доступна</div>
-                    <p class="desc">
-                        Классическая сборка для старых ПК на основе Windows 8.1.<br />
-                        <strong>Версия:</strong> 8.1 x64<br />
-                        <strong>Размер:</strong> ~3.2 ГБ
-                    </p>
-                    <a href="https://drive.google.com/uc?export=download&id=1CTQdTxCWKyEhUy6cbSHDdAmswO1XGQga" target="_blank" class="btn btn--small" onclick="showToast('⬇️ Скачивание начато!', 'success')">Скачать</a>
-                </div>
-                <div class="download-card">
-                    <div class="version">ZetuOS 11 Lite</div>
-                    <div class="status coming">⏳ В разработке</div>
-                    <p class="desc">Будущая сборка на основе Windows 11 с ещё большей оптимизацией.</p>
-                    <button class="btn btn--small btn--ghost" onclick="showToast('Разработка идёт, следите за новостями!', 'error')">Ожидается</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ПРОГРАММЫ -->
-    <!-- ============================================================ -->
-    <section class="page" id="page-programs">
-        <div class="container">
-            <h2 class="section-title">Наши <span>утилиты</span></h2>
-            <div class="programs-grid">
-                <div class="program-card">
-                    <h3><span>⚙</span> ZetuTweaker</h3>
-                    <p class="desc">Мощный твикер для настройки Windows. Позволяет отключать службы, изменять параметры реестра и оптимизировать систему.</p>
-                    <div class="badge" style="background:var(--warning); color:#fff;">В разработке</div>
-                    <p style="margin-top:12px; color:var(--text-secondary);">Ожидается в ближайших обновлениях.</p>
-                </div>
-                <div class="program-card">
-                    <h3><span>⌨</span> ZetuCommand</h3>
-                    <p class="desc">Большой скрипт оптимизации для уже установленной ОС. Более 50 команд по очистке, ускорению и настройке.</p>
-                    <div class="code-box" id="zetuCommandScript">
-                        :: ZetuCommand v1.0 - Оптимизация Windows
-                        @echo off
-                        title ZetuCommand - Оптимизатор
-                        echo [*] Начинаем оптимизацию...
-                        :: ... (полный скрипт)
-                        echo [✔] Готово!
-                        pause
-                    </div>
-                    <div class="flex-wrap" style="margin-top:12px;">
-                        <button class="btn btn--small btn--primary" onclick="runZetuCommand()">▶ Выполнить</button>
-                        <button class="btn btn--small btn--ghost" onclick="copyAndRunCommand()">📋 Копировать</button>
+                    <div class="socials">
+                        <a href="#" onclick="showToast('Telegram канал ZetuOS')">📱 Telegram</a>
+                        <a href="#" onclick="showToast('YouTube канал ZetuOS')">▶️ YouTube</a>
+                        <a href="#" onclick="showToast('GitHub ZetuOS')">🐙 GitHub</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ВИКИ -->
-    <!-- ============================================================ -->
+    <!-- ===== ВИКИ ===== -->
     <section class="page" id="page-wiki">
         <div class="container">
             <h2 class="section-title">База <span>знаний</span></h2>
@@ -1796,18 +1322,16 @@
         </div>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ZetuAI -->
-    <!-- ============================================================ -->
+    <!-- ===== ZetuAI ===== -->
     <section class="page" id="page-ai">
         <div class="container">
             <h2 class="section-title">🤖 ZetuAI — <span>умный помощник</span></h2>
-            <p class="section-sub">Задайте любой вопрос — я отвечу на всё, даже если это не связано с проектом.</p>
-            <div class="ai-chat" id="aiChat">
+            <p class="section-sub">Задайте любой вопрос о ZetuOS, настройках Windows или просто пообщайтесь.</p>
+            <div class="ai-chat">
                 <div class="messages" id="aiMessages">
                     <div class="msg ai">
                         <div class="avatar">🧠</div>
-                        <div class="bubble">Привет! Я ZetuAI — ваш универсальный помощник. Спрашивайте о чём угодно: наука, история, технологии, здоровье, спорт, кулинария, путешествия — и, конечно, о ZetuOS. Я всегда рад помочь!</div>
+                        <div class="bubble">Привет! Я ZetuAI. Спрашивай о ZetuOS, оптимизации Windows или о чём угодно. Я всегда рад помочь!</div>
                     </div>
                 </div>
                 <div class="typing-indicator" id="typingIndicator">
@@ -1815,32 +1339,32 @@
                     <span class="dots"><span></span><span></span><span></span></span>
                 </div>
                 <div class="input-row">
-                    <input type="text" id="aiInput" placeholder="Спросите меня о чём угодно..." onkeydown="if(event.key==='Enter') askAI()" />
+                    <input type="text" id="aiInput" placeholder="Спроси меня..." onkeydown="if(event.key==='Enter') askAI()" />
                     <button class="btn btn--small btn--primary" onclick="askAI()">Отправить</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ============================================================ -->
-    <!-- СТРАНИЦА: ИНСТРУМЕНТЫ (без погоды) -->
-    <!-- ============================================================ -->
+    <!-- ===== ИНСТРУМЕНТЫ ===== -->
     <section class="page" id="page-tools">
         <div class="container">
             <h2 class="section-title">Полезные <span>инструменты</span></h2>
-            <div class="widgets-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:30px; margin-bottom:80px;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:30px; margin-bottom:80px;">
+
                 <!-- Задачи -->
-                <div class="widget">
-                    <h4><span>📋</span> Задачи</h4>
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="color:var(--accent);">📋</span> Задачи</h4>
                     <div style="display:flex; gap:6px; margin-bottom:10px;">
                         <input type="text" id="taskInput" placeholder="Новая задача" style="flex:1; padding:6px 10px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text);" />
                         <button class="btn btn--small" onclick="addTask()">+</button>
                     </div>
                     <ul id="taskList" style="list-style:none; text-align:left; color:var(--text-secondary);"></ul>
                 </div>
+
                 <!-- Калькулятор -->
-                <div class="widget">
-                    <h4><span>🧮</span> Калькулятор</h4>
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="color:var(--accent);">🧮</span> Калькулятор</h4>
                     <input type="text" id="calcDisplay" style="width:100%; padding:10px; font-size:1.5rem; border:1px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); text-align:right; margin-bottom:10px;" readonly />
                     <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px;">
                         <button class="btn btn--small btn--ghost" onclick="calcPress('7')">7</button>
@@ -1862,28 +1386,39 @@
                     </div>
                     <button class="btn btn--small btn--ghost" onclick="calcClear()" style="margin-top:6px; width:100%;">C</button>
                 </div>
+
                 <!-- Цитата дня -->
-                <div class="widget">
-                    <h4><span>📜</span> Цитата дня</h4>
-                    <div class="sub" id="quoteText">Загрузка...</div>
-                    <div class="sub" style="font-size:0.8rem;" id="quoteAuthor"></div>
-                    <button class="btn btn--small btn--ghost" onclick="updateQuote()">Обновить</button>
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="color:var(--accent);">📜</span> Цитата дня</h4>
+                    <div style="color:var(--text-secondary);" id="quoteText">Загрузка...</div>
+                    <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;" id="quoteAuthor"></div>
+                    <button class="btn btn--small btn--ghost" onclick="updateQuote()" style="margin-top:10px;">Обновить</button>
                 </div>
+
                 <!-- Угадай число -->
-                <div class="widget">
-                    <h4><span>🎯</span> Угадай число</h4>
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="color:var(--accent);">🎯</span> Угадай число</h4>
                     <p style="color:var(--text-secondary);">Я загадал число от 1 до 100.</p>
                     <input type="number" id="guessInput" placeholder="Ваше число" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin:8px 0;" />
                     <button class="btn btn--small" onclick="makeGuess()">Проверить</button>
                     <div id="guessResult" style="margin-top:8px; color:var(--text-secondary);"></div>
                     <button class="btn btn--small btn--ghost" onclick="resetGuess()" style="margin-top:6px;">Новая игра</button>
                 </div>
+
                 <!-- Будильник -->
-                <div class="widget">
-                    <h4><span>⏰</span> Будильник</h4>
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px;"><span style="color:var(--accent);">⏰</span> Будильник</h4>
                     <input type="time" id="alarmTime" value="08:00" style="width:100%; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text);" />
                     <button class="btn btn--small" onclick="setAlarm()">Установить</button>
                     <div id="alarmStatus" style="margin-top:8px; color:var(--text-secondary);">Будильник не установлен</div>
+                </div>
+
+                <!-- Кликер -->
+                <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px 22px; text-align:center;">
+                    <h4 style="font-size:1.2rem; margin-bottom:12px; display:flex; align-items:center; gap:10px; justify-content:center;"><span style="color:var(--accent);">👆</span> Кликер</h4>
+                    <div style="font-size:3rem; font-weight:800; color:var(--accent);" id="clickerScore">0</div>
+                    <button class="click-btn" id="clickerBtn" style="margin-top:10px; padding:12px 30px; font-size:1.2rem; border:none; border-radius:60px; background:var(--accent); color:#0a0b14; cursor:pointer; box-shadow:0 0 30px var(--accent-glow); transition:0.2s;">👆 Нажми</button>
+                    <button class="btn btn--small btn--ghost" onclick="resetClicker()" style="margin-top:10px;">Сбросить</button>
                 </div>
             </div>
         </div>
@@ -1893,14 +1428,12 @@
     <footer>
         <div class="footer-links">
             <a onclick="switchPage('page-home')">Главная</a>
-            <a onclick="switchPage('page-downloads')">Загрузки</a>
-            <a onclick="switchPage('page-programs')">Программы</a>
             <a onclick="switchPage('page-wiki')">Вики</a>
             <a onclick="switchPage('page-ai')">ZetuAI</a>
             <a onclick="switchPage('page-tools')">Инструменты</a>
             <a onclick="showToast('Связь: support@zetu.com', 'success')">Поддержка</a>
         </div>
-        <p>ZetuOS — неофициальные сборки Windows. Все права принадлежат Microsoft.</p>
+        <p>Zetu — неофициальные сборки Windows. Все права принадлежат Microsoft.</p>
         <p class="creators">
             Создатели: <strong>Alxiizzz</strong> <span class="accent">&amp;</span> <strong>Пашаонт тестер</strong>
         </p>
@@ -1910,10 +1443,321 @@
     <button id="back-to-top" title="Наверх">↑</button>
     <div id="toast-container"></div>
 
-    <!-- ============================================================ -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================================================ -->
     <script>
+        // ===== ДАННЫЕ ОС =====
+        const osData = {
+            '10-full': {
+                name: 'ZetuOS 10 Full',
+                version: '22H2 x64 • Полная',
+                icon: '🪟',
+                badge: '✅ Доступна для скачивания',
+                size: '5.8 ГБ',
+                edition: 'Full',
+                specs: [
+                    ['Версия', '22H2'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '5.8 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Cortana', 'OneDrive', 'Телеметрия и сбор данных',
+                    'Рекламные приложения', 'Windows Mixed Reality',
+                    'Skype, Paint 3D, Xbox'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность',
+                    'Оптимизирован ввод-вывод'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: '#',
+                downloadNoDef: '#'
+            },
+            '10-lite': {
+                name: 'ZetuOS 10 Lite',
+                version: '22H2 x64 • Lite',
+                icon: '🪟',
+                badge: '✅ Доступна для скачивания',
+                size: '4.0 ГБ',
+                edition: 'Lite',
+                specs: [
+                    ['Версия', '22H2'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '4.0 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Cortana', 'OneDrive', 'Телеметрия и сбор данных',
+                    'Рекламные приложения', 'Windows Mixed Reality',
+                    'Skype, Paint 3D, Xbox'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность',
+                    'Оптимизирован ввод-вывод'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: 'https://pixeldrain.com/u/3D9BCHKs',
+                downloadNoDef: 'https://pixeldrain.com/u/3D9BCHKs'
+            },
+            '81-full': {
+                name: 'ZetuOS 8.1 Full',
+                version: '8.1 x64 • Полная',
+                icon: '💠',
+                badge: '✅ Доступна для скачивания',
+                size: '5.2 ГБ',
+                edition: 'Full',
+                specs: [
+                    ['Версия', '8.1'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '5.2 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Телеметрия', 'OneDrive', 'Рекламные приложения',
+                    'Современные приложения (Metro)'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: '#',
+                downloadNoDef: '#'
+            },
+            '81-lite': {
+                name: 'ZetuOS 8.1 Lite',
+                version: '8.1 x64 • Lite',
+                icon: '💠',
+                badge: '✅ Доступна для скачивания',
+                size: '4.41 ГБ',
+                edition: 'Lite',
+                specs: [
+                    ['Версия', '8.1'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '4.41 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Телеметрия', 'OneDrive', 'Рекламные приложения',
+                    'Современные приложения (Metro)'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: 'https://pixeldrain.com/u/WiVc6qNU',
+                downloadNoDef: 'https://pixeldrain.com/u/WiVc6qNU'
+            },
+            '11-full': {
+                name: 'ZetuOS 11 Full',
+                version: '23H2 x64 • Полная',
+                icon: '✨',
+                badge: '✅ Доступна для скачивания',
+                size: '6.2 ГБ',
+                edition: 'Full',
+                specs: [
+                    ['Версия', '23H2'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '6.2 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Cortana', 'OneDrive', 'Телеметрия',
+                    'Рекламные приложения', 'Windows Mixed Reality',
+                    'Skype, Paint 3D, Xbox'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность',
+                    'Оптимизирован ввод-вывод'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: '#',
+                downloadNoDef: '#'
+            },
+            '11-lite': {
+                name: 'ZetuOS 11 Lite',
+                version: '23H2 x64 • Lite',
+                icon: '✨',
+                badge: '✅ Доступна для скачивания',
+                size: '5.48 ГБ',
+                edition: 'Lite',
+                specs: [
+                    ['Версия', '23H2'],
+                    ['Разрядность', 'x64'],
+                    ['Размер ISO', '5.48 ГБ'],
+                    ['Язык', 'Русский + Английский'],
+                    ['Редакция', 'Pro'],
+                    ['Активация', 'Не требуется']
+                ],
+                removed: [
+                    'Cortana', 'OneDrive', 'Телеметрия',
+                    'Рекламные приложения', 'Windows Mixed Reality',
+                    'Skype, Paint 3D, Xbox'
+                ],
+                optimized: [
+                    'Отключены фоновые процессы', 'Снижена DPC-задержка',
+                    'Отключена индексация поиска',
+                    'Схема питания — максимальная производительность',
+                    'Отключены анимации и прозрачность',
+                    'Оптимизирован ввод-вывод'
+                ],
+                apps: [
+                    ['🌐', 'Google Chrome'],
+                    ['📁', '7-Zip'],
+                    ['🎬', 'MPC-HC'],
+                    ['💬', 'Telegram'],
+                    ['🎮', 'Steam'],
+                    ['🔍', 'Everything']
+                ],
+                downloadDef: 'https://pixeldrain.com/u/3D9BCHKs',
+                downloadNoDef: 'https://pixeldrain.com/u/3D9BCHKs'
+            }
+        };
+
+        // ===== ГЕНЕРАЦИЯ КАРТОЧЕК =====
+        function generateOSCards() {
+            const grid = document.getElementById('osGrid');
+            grid.innerHTML = '';
+            const order = ['10-full', '10-lite', '81-full', '81-lite', '11-full', '11-lite'];
+
+            order.forEach(key => {
+                const data = osData[key];
+                const versionNum = key.split('-')[0];
+                const edition = data.edition;
+                const displayName = `ZetuOS ${versionNum} ${edition}`;
+
+                const card = document.createElement('div');
+                card.className = 'os-card';
+                card.setAttribute('onclick', `openOS('${key}')`);
+                card.innerHTML = `
+                    <span class="icon">${data.icon}</span>
+                    <div class="name">ZetuOS <span>${versionNum}</span> ${edition}</div>
+                    <div class="version">${data.version}</div>
+                    <div class="size">${data.size}</div>
+                    <div class="desc">${data.removed.slice(0,3).join(', ')}...</div>
+                    <button class="btn btn--small btn--primary" onclick="event.stopPropagation(); openOS('${key}')">Подробнее →</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        generateOSCards();
+
+        // ===== ОТКРЫТЬ ОС =====
+        function openOS(key) {
+            const data = osData[key];
+            if (!data) return;
+
+            const versionNum = key.split('-')[0];
+            const edition = data.edition;
+
+            document.getElementById('osIcon').textContent = data.icon;
+            document.getElementById('osVersionSpan').textContent = versionNum;
+            document.getElementById('osEditionSpan').textContent = edition;
+            document.getElementById('osSub').textContent = data.version;
+            document.getElementById('osBadge').textContent = data.badge;
+            document.getElementById('osDownloadSize').textContent = data.size;
+            document.getElementById('osDownloadLinkDef').href = data.downloadDef || '#';
+            document.getElementById('osDownloadLinkNoDef').href = data.downloadNoDef || '#';
+
+            // Спецификации
+            const specsContainer = document.getElementById('osSpecs');
+            specsContainer.innerHTML = '';
+            data.specs.forEach(spec => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `<strong>${spec[0]}</strong> <span>${spec[1]}</span>`;
+                specsContainer.appendChild(div);
+            });
+
+            // Удалено
+            const removedContainer = document.getElementById('osRemoved');
+            removedContainer.innerHTML = '';
+            data.removed.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="check">✓</span> ${item}`;
+                removedContainer.appendChild(li);
+            });
+
+            // Оптимизации
+            const optimizedContainer = document.getElementById('osOptimized');
+            optimizedContainer.innerHTML = '';
+            data.optimized.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="check">✓</span> ${item}`;
+                optimizedContainer.appendChild(li);
+            });
+
+            // Приложения
+            const appsContainer = document.getElementById('osApps');
+            appsContainer.innerHTML = '';
+            data.apps.forEach(app => {
+                const div = document.createElement('div');
+                div.className = 'app-item';
+                div.innerHTML = `<span class="icon">${app[0]}</span>${app[1]}`;
+                appsContainer.appendChild(div);
+            });
+
+            switchPage('page-os');
+        }
+
         // ===== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ =====
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1924,6 +1768,7 @@
             document.getElementById('navLinks').classList.remove('open');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 switchPage(this.dataset.page);
@@ -1945,8 +1790,7 @@
         // ===== СКРОЛЛ =====
         window.addEventListener('scroll', function() {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-            const btn = document.getElementById('back-to-top');
-            btn.classList.toggle('visible', window.scrollY > 300);
+            document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 300);
             const scrollTop = document.documentElement.scrollTop;
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight) * 100 + '%';
@@ -1959,21 +1803,18 @@
         const stehmanQuotes = [
             { text: "Я не знаю, кто я, но я точно знаю, что я не тот, кого вы ищете.", author: "Стехман" },
             { text: "Мой компьютер работает на 100% быстрее после того, как я выключил все фоновые процессы... включая себя.", author: "Стехман" },
-            { text: "Если вы не можете объяснить это своей бабушке, значит, вы не понимаете это сами. А если ваша бабушка — программист, то просто скажите ей: 'Это как Windows, только без слежки'.", author: "Стехман" },
+            { text: "Если вы не можете объяснить это своей бабушке, значит, вы не понимаете это сами.", author: "Стехман" },
             { text: "Я люблю Windows, но только когда она не обновляется.", author: "Стехман" },
-            { text: "Самый быстрый способ ускорить компьютер — это выключить его и пойти погулять. Но мы не ищем лёгких путей, мы ищем лёгких путей.", author: "Стехман" },
             { text: "Оптимизация — это когда у вас 100% диска, а вы всё равно не можете найти, куда делось место.", author: "Стехман" },
             { text: "Я переустановил Windows 10 раз. Мне стало легче.", author: "Стехман" },
             { text: "Приватность — это когда ты можешь спокойно смотреть мемы, и никто не знает, что ты ржёшь над котами в 3 часа ночи.", author: "Стехман" },
             { text: "Моя система загружается быстрее, чем я успеваю налить чай. Но я всё равно пью чай, потому что это традиция.", author: "Стехман" },
-            { text: "Я не знаю, что такое DPC latency, но я знаю, что если она высокая, то у меня высокий пинг в голове.", author: "Стехман" },
         ];
         let currentStehmanIndex = Math.floor(Math.random() * stehmanQuotes.length);
 
         function displayStehmanQuote(index) {
-            const q = stehmanQuotes[index];
-            document.getElementById('stehmanText').textContent = q.text;
-            document.getElementById('stehmanAuthor').textContent = '— ' + q.author;
+            document.getElementById('stehmanText').textContent = stehmanQuotes[index].text;
+            document.getElementById('stehmanAuthor').textContent = '— ' + stehmanQuotes[index].author;
         }
         displayStehmanQuote(currentStehmanIndex);
 
@@ -1982,160 +1823,70 @@
             displayStehmanQuote(currentStehmanIndex);
         }
 
-        // ===== ГАЛЕРЕЯ (СЛАЙДЕР) =====
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.gallery-slider .slide');
-        const totalSlides = slides.length;
-        const dotsContainer = document.getElementById('dotsContainer');
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('button');
-            dot.className = 'dot' + (i === 0 ? ' active' : '');
-            dot.dataset.index = i;
-            dot.addEventListener('click', () => goToSlide(i));
-            dotsContainer.appendChild(dot);
+        // ===== МОДАЛКА =====
+        const modal = document.getElementById('welcomeModal');
+        if (!localStorage.getItem('welcomeShown')) {
+            modal.classList.add('open');
+            localStorage.setItem('welcomeShown', 'true');
         }
 
-        function goToSlide(index) {
-            slideIndex = index;
-            if (slideIndex < 0) slideIndex = totalSlides - 1;
-            if (slideIndex >= totalSlides) slideIndex = 0;
-            document.getElementById('slides').style.transform = `translateX(-${slideIndex * 100}%)`;
-            document.querySelectorAll('.dot').forEach((d, i) => {
-                d.classList.toggle('active', i === slideIndex);
-            });
+        function closeModal() {
+            modal.classList.remove('open');
         }
-
-        function changeSlide(dir) { goToSlide(slideIndex + dir); }
-
-        // Автопрокрутка
-        let autoSlideInterval = setInterval(() => changeSlide(1), 5000);
-        const slider = document.getElementById('gallerySlider');
-        slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-        slider.addEventListener('mouseleave', () => {
-            autoSlideInterval = setInterval(() => changeSlide(1), 5000);
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
         });
 
-        // ===== ОПРОС =====
-        const pollData = JSON.parse(localStorage.getItem('pollData')) || { votes: [0, 0, 0, 0], total: 0 };
-        const pollOptions = document.querySelectorAll('.poll .option');
-        let userVoted = localStorage.getItem('userVoted') === 'true';
-
-        function updatePoll() {
-            const total = pollData.votes.reduce((a, b) => a + b, 0);
-            pollData.total = total;
-            document.getElementById('totalVotes').textContent = total;
-            pollOptions.forEach((opt, idx) => {
-                const count = pollData.votes[idx] || 0;
-                const percent = total === 0 ? 0 : Math.round((count / total) * 100);
-                opt.querySelector('.vote-count').textContent = percent + '%';
-            });
-            localStorage.setItem('pollData', JSON.stringify(pollData));
-        }
-        pollOptions.forEach((opt, idx) => {
-            opt.addEventListener('click', function() {
-                if (userVoted) { showToast('Вы уже голосовали!', 'error'); return; }
-                pollData.votes[idx] = (pollData.votes[idx] || 0) + 1;
-                userVoted = true;
-                localStorage.setItem('userVoted', 'true');
-                updatePoll();
-                showToast('✅ Спасибо за ваш голос!', 'success');
-            });
-        });
-        updatePoll();
-
-        // ===== ПОДПИСКА =====
-        function subscribe() {
-            const email = document.getElementById('emailInput').value.trim();
-            if (!email || !email.includes('@')) { showToast('❌ Введите корректный email', 'error'); return; }
-            const subscribers = JSON.parse(localStorage.getItem('subscribers')) || [];
-            if (subscribers.includes(email)) { showToast('Вы уже подписаны!', 'error'); return; }
-            subscribers.push(email);
-            localStorage.setItem('subscribers', JSON.stringify(subscribers));
-            showToast(`✅ Спасибо! Мы уведомим вас на ${email}`, 'success');
-            document.getElementById('emailInput').value = '';
+        // ===== ТОСТЫ =====
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(40px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
         }
 
-        // ===== КЛИКЕР =====
-        let clickerScore = parseInt(localStorage.getItem('clickerScore')) || 0;
-        document.getElementById('clickerScore').textContent = clickerScore;
-        document.getElementById('clickerBtn').addEventListener('click', function() {
-            clickerScore++;
-            document.getElementById('clickerScore').textContent = clickerScore;
-            localStorage.setItem('clickerScore', clickerScore.toString());
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => this.style.transform = 'scale(1)', 100);
-        });
-
-        function resetClicker() {
-            clickerScore = 0;
-            document.getElementById('clickerScore').textContent = '0';
-            localStorage.setItem('clickerScore', '0');
-            showToast('🔄 Кликер сброшен', 'success');
-        }
-
-        // ===== НАСТРОЙКИ =====
-        const fontSizeRange = document.getElementById('fontSizeRange');
-        fontSizeRange.addEventListener('input', function() {
-            document.documentElement.style.setProperty('--font-size-base', this.value + 'rem');
-            localStorage.setItem('fontSize', this.value);
-        });
-        if (localStorage.getItem('fontSize')) {
-            const val = localStorage.getItem('fontSize');
-            fontSizeRange.value = val;
-            document.documentElement.style.setProperty('--font-size-base', val + 'rem');
-        }
-        const fontSelect = document.getElementById('fontFamilySelect');
-        fontSelect.addEventListener('change', function() {
-            document.documentElement.style.setProperty('--font-family', this.value);
-            localStorage.setItem('fontFamily', this.value);
-        });
-        if (localStorage.getItem('fontFamily')) {
-            const val = localStorage.getItem('fontFamily');
-            fontSelect.value = val;
-            document.documentElement.style.setProperty('--font-family', val);
-        }
-
-        const themeSwitch = document.getElementById('themeToggleSwitch');
+        // ===== ТЕМА =====
         const themeToggleBtn = document.getElementById('themeToggle');
         let isLight = localStorage.getItem('theme') === 'light';
 
         function applyTheme(light) {
             document.body.classList.toggle('light-theme', light);
-            themeSwitch.classList.toggle('active', !light);
             themeToggleBtn.textContent = light ? '☀️' : '🌙';
             localStorage.setItem('theme', light ? 'light' : 'dark');
         }
         applyTheme(isLight);
-        themeSwitch.addEventListener('click', function() {
+
+        themeToggleBtn.addEventListener('click', function() {
             isLight = !isLight;
             applyTheme(isLight);
             showToast(isLight ? '☀️ Светлая тема' : '🌙 Тёмная тема', 'success');
         });
-        themeToggleBtn.addEventListener('click', function() {
-            isLight = !isLight;
-            applyTheme(isLight);
-        });
 
-        // ===== СЧЁТЧИК ПОСЕЩЕНИЙ =====
+        // ===== СЧЁТЧИК =====
         let visits = parseInt(localStorage.getItem('visits')) || 0;
         visits++;
         localStorage.setItem('visits', visits.toString());
-        document.getElementById('visitCounter').textContent = `👁️ Посещений: ${visits}`;
 
         // ===== ВИКИ =====
         const wikiData = [
-            { title: "Что такое ZetuOS 10 Lite?", tags: ["общее"], content: "Легковесная сборка Windows 10." },
-            { title: "Установка с флешки", tags: ["установка"], content: "Запишите ISO через Rufus." },
-            { title: "Отключение телеметрии", tags: ["приватность"], content: "В ZetuOS телеметрия полностью отключена." },
-            { title: "Минимальные требования", tags: ["требования"], content: "1 ГГц CPU, 1 ГБ ОЗУ." },
-            { title: "Рекомендуемые требования", tags: ["требования"], content: "i3/Ryzen 3, 4 ГБ ОЗУ." },
-            { title: "Что такое ZetuTweaker?", tags: ["программы"], content: "Утилита для настройки Windows." },
+            { title: "Что такое ZetuOS?", tags: ["общее"], content: "Проект по созданию оптимизированных сборок Windows без телеметрии." },
+            { title: "Установка с флешки", tags: ["установка"], content: "Запишите ISO через Rufus, загрузитесь с флешки." },
+            { title: "Отключение телеметрии", tags: ["приватность"], content: "Во всех сборках ZetuOS телеметрия отключена." },
+            { title: "Требования ZetuOS 10", tags: ["требования"], content: "1 ГГц CPU, 1 ГБ ОЗУ (32-bit) / 2 ГБ (64-bit)." },
+            { title: "Требования ZetuOS 8.1", tags: ["требования"], content: "1 ГГц CPU, 1 ГБ ОЗУ." },
+            { title: "Требования ZetuOS 11", tags: ["требования"], content: "2 ГГц CPU, 4 ГБ ОЗУ, TPM 2.0." },
+            { title: "ZetuTweaker", tags: ["программы"], content: "Утилита для настройки Windows. Разработка начинается." },
             { title: "ZetuCommand", tags: ["программы"], content: "Скрипт оптимизации с 50+ командами." },
             { title: "Как ускорить загрузку", tags: ["оптимизация"], content: "Отключите лишние службы." },
             { title: "Настройка питания", tags: ["питание"], content: "Выберите схему «Максимальная производительность»." },
             { title: "Очистка временных файлов", tags: ["очистка"], content: "Используйте очистку диска." },
-            { title: "Настройка приоритета процессов", tags: ["процессы"], content: "Установите высокий приоритет для игр." },
-            { title: "Отключение анимаций", tags: ["анимация"], content: "В параметрах производительности." },
+            { title: "Сравнение версий", tags: ["сравнение"], content: "Full — все функции, Lite — максимальная производительность." },
         ];
 
         function generateWikiEntries() {
@@ -2203,82 +1954,16 @@
         function getAIResponse(q) {
             const lower = q.toLowerCase();
             if (lower.includes('привет')) return 'Привет! Я ZetuAI. Чем могу помочь?';
-            if (lower.includes('zetuos')) return 'ZetuOS — это линейка оптимизированных сборок Windows. 10 Lite уже доступна, 8.1 Lite тоже, а 11 Lite в разработке.';
-            if (lower.includes('установка')) return 'Скачайте ISO, запишите через Rufus, загрузитесь с флешки и установите.';
-            if (lower.includes('оптимизация')) return 'Используйте ZetuCommand — скрипт выполнит более 50 действий по ускорению.';
-            if (lower.includes('требования')) return 'Минимальные: 1 ГГц CPU, 1 ГБ ОЗУ. Рекомендуемые: i3/Ryzen 3, 4 ГБ ОЗУ.';
-            if (lower.includes('игры')) return 'Прирост FPS до 20% благодаря оптимизации.';
-            if (lower.includes('наука')) return 'Наука — это прекрасно! Что именно вас интересует: физика, химия, биология?';
-            return 'Интересный вопрос! Я пока учусь, но могу помочь с ZetuOS, настройками или ответить на общие вопросы.';
+            if (lower.includes('zetuos')) return 'ZetuOS — это сборки Windows: 10, 8.1 и 11, Full и Lite.';
+            if (lower.includes('zetutweaker')) return 'ZetuTweaker — в разработке. Скоро появится!';
+            if (lower.includes('установка')) return 'Скачайте ISO, запишите через Rufus, загрузитесь и установите.';
+            if (lower.includes('оптимизация')) return 'Используйте ZetuCommand — скрипт с 50+ командами.';
+            if (lower.includes('требования')) return 'Для 10: 1 ГГц CPU, 1 ГБ ОЗУ. Для 11: 2 ГГц CPU, 4 ГБ ОЗУ, TPM 2.0.';
+            if (lower.includes('игры')) return 'ZetuOS 10 Lite даёт прирост FPS до 20%.';
+            return 'Интересный вопрос! Я могу помочь с выбором ZetuOS или ответить на общие вопросы.';
         }
 
-        // ===== ZetuCommand =====
-        function copyAndRunCommand() {
-            const script = document.getElementById('zetuCommandScript').textContent;
-            navigator.clipboard.writeText(script).then(() => {
-                showToast('✅ Скрипт скопирован! Откройте CMD и вставьте.', 'success');
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = script;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('✅ Скопировано!', 'success');
-            });
-        }
-
-        function runZetuCommand() {
-            showToast('⚙️ Запуск ZetuCommand...', 'success');
-            const btn = document.querySelector('.program-card .btn--primary');
-            const orig = btn.innerHTML;
-            btn.innerHTML = '⏳ Выполняется...';
-            btn.disabled = true;
-            let p = 0;
-            const interval = setInterval(() => {
-                p += 10;
-                if (p >= 100) {
-                    clearInterval(interval);
-                    btn.innerHTML = '✅ Готово!';
-                    setTimeout(() => { btn.innerHTML = orig;
-                        btn.disabled = false; }, 1500);
-                    showToast('✅ Оптимизация завершена!', 'success');
-                } else {
-                    btn.innerHTML = `⏳ Выполняется ${p}%`;
-                }
-            }, 300);
-        }
-
-        // ===== ТОСТЫ =====
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(40px)';
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
-
-        // ===== МОДАЛЬНОЕ ОКНО =====
-        const modal = document.getElementById('welcomeModal');
-        if (!localStorage.getItem('welcomeShown')) {
-            modal.classList.add('open');
-            localStorage.setItem('welcomeShown', 'true');
-        }
-
-        function closeModal() {
-            modal.classList.remove('open');
-        }
-        modal.addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        // ===== ВИДЖЕТЫ (инструменты) =====
-        // Задачи
+        // ===== ИНСТРУМЕНТЫ =====
         function loadTasks() {
             const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             const list = document.getElementById('taskList');
@@ -2316,7 +2001,6 @@
             loadTasks();
         }
 
-        // Калькулятор
         let calcDisplay = document.getElementById('calcDisplay');
         let calcExpression = '';
 
@@ -2332,7 +2016,6 @@
         function calcClear() { calcExpression = '';
             calcDisplay.value = ''; }
 
-        // Цитата дня
         const quotes = [
             { text: "Лучший способ предсказать будущее — создать его.", author: "Питер Друкер" },
             { text: "Сложнее всего начать действовать, все остальное зависит только от упорства.", author: "Амелия Эрхарт" },
@@ -2354,7 +2037,6 @@
             document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
         } else { updateQuote(); }
 
-        // Угадай число
         let secretNumber = Math.floor(Math.random() * 100) + 1;
         let attempts = 0;
 
@@ -2390,7 +2072,6 @@
             document.getElementById('guessInput').value = '';
         }
 
-        // Будильник
         let alarmTimeout = null;
 
         function setAlarm() {
@@ -2411,14 +2092,29 @@
             showToast(`⏰ Будильник установлен на ${time}`, 'success');
         }
 
+        let clickerScore = parseInt(localStorage.getItem('clickerScore')) || 0;
+        document.getElementById('clickerScore').textContent = clickerScore;
+        document.getElementById('clickerBtn').addEventListener('click', function() {
+            clickerScore++;
+            document.getElementById('clickerScore').textContent = clickerScore;
+            localStorage.setItem('clickerScore', clickerScore.toString());
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => this.style.transform = 'scale(1)', 100);
+        });
+
+        function resetClicker() {
+            clickerScore = 0;
+            document.getElementById('clickerScore').textContent = '0';
+            localStorage.setItem('clickerScore', '0');
+            showToast('🔄 Кликер сброшен', 'success');
+        }
+
         // ===== КЛАВИАТУРА =====
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === '1') switchPage('page-home');
-            if (e.ctrlKey && e.key === '2') switchPage('page-downloads');
-            if (e.ctrlKey && e.key === '3') switchPage('page-programs');
-            if (e.ctrlKey && e.key === '4') switchPage('page-wiki');
-            if (e.ctrlKey && e.key === '5') switchPage('page-ai');
-            if (e.ctrlKey && e.key === '6') switchPage('page-tools');
+            if (e.ctrlKey && e.key === '2') switchPage('page-wiki');
+            if (e.ctrlKey && e.key === '3') switchPage('page-ai');
+            if (e.ctrlKey && e.key === '4') switchPage('page-tools');
             if (e.key === 'Escape') {
                 document.getElementById('navLinks').classList.remove('open');
                 closeModal();
@@ -2432,9 +2128,9 @@
                 document.querySelector('.nav-btn[data-page="page-home"]').classList.add('active');
             }
             setTimeout(() => {
-                showToast('🚀 ZetuOS 10 Lite уже здесь! Скачайте сейчас.', 'success');
-            }, 1200);
-            console.log('🚀 ZetuOS — сайт загружен!');
+                showToast('🚀 Добро пожаловать в Zetu! Выбери свою ОС.', 'success');
+            }, 1000);
+            console.log('🚀 Zetu — сайт загружен!');
         });
     </script>
 </body>
